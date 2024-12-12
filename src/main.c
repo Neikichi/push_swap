@@ -1,6 +1,6 @@
 #include "libft.h"
 #include "push_swap.h"
-#include <signal.h>
+#include <limits.h>
 #include <stdlib.h>
 
 void print_stack(t_stacks *stacks)
@@ -45,42 +45,61 @@ void	print_list(t_list *ds)
 	}
 }
 
-int	chk_stacks(t_list **ds, int *n)
+void	free_stacks(t_stacks *stacks)
+{
+	ft_lstclear(&stacks->a, free);
+	ft_lstclear(&stacks->b, free);
+}
+
+void	free_split(char **str)
+{
+	char **temp;
+
+	if (!str)
+		return ;
+	temp = str;
+	while (*temp)
+	{
+		free(*temp);
+		temp++;
+	}
+	free(str);
+}
+
+void	free_dupes(t_list *ds)
+{
+	t_list  *ptr;
+	t_list	*temp;
+
+	if (!ds)
+		return ;
+	ptr = ds->next;
+	while (ptr)
+	{
+		temp = ptr->next;
+		free(ptr);
+		ptr = temp;
+	}
+	free(ds);
+}
+
+int	chk_dupes(t_list **ds, int *n)
 {
 	t_list *temp;
 	t_list *ptr;
 
-	if (!*ds)
-	{
-		*ds = ft_lstnew(n);
-		return (1);
-	}
-	if (*(int *)(*ds)->content > *n)
+	if (!*ds || *(int *)(*ds)->content > *n)
     {
-        // temp = ft_lstnew(n);
-        // if (!temp)
-        //     return (0);
-        // temp->next = *ds;
-        // *ds = temp;
 		ft_lstadd_front(ds, ft_lstnew(n));
         return (1);
     }
 	ptr = *ds;
 	while (ptr)
 	{
-		// ft_printf("Traversing: Current content: %d, Checking n: %d\n", *(int *)ptr->content, *n);
-		//
 		if (*(int *)ptr->content == *n)
-		{
-			ft_printf("Duplicate found for n: %d\n", *n);
 			return (0);
-		}
 		else if (*(int *)ptr->content < *n && (!ptr->next || *(int *)ptr->next->content > *n))
 		{
-			// if (!ptr->next)
-			// 	ft_printf("Inserting at the end: [%d]\n", *n);
-			// else
-			// 	ft_printf("Inserting [%d] between [%d] and [%d]\n", *n, *(int *)ptr->content, *(int *)ptr->next->content);
 			temp = ft_lstnew(n);
 			if (!temp)
 				return (0);
@@ -89,11 +108,25 @@ int	chk_stacks(t_list **ds, int *n)
 			break ;
 		}
 		else
-		{
 			ptr = ptr->next;
-		}
 	}
 	return (1);
+}
+
+int	chk_isort(t_stacks *stacks)
+{
+	t_list *ta;
+
+	if (!stacks || !stacks->a)
+		return (0);
+	ta = stacks->a;
+	while (ta && ta->next)
+	{
+		if (*(int *)ta->content > *(int *)ta->next->content)
+			return (1);
+		ta = ta->next;
+	}
+	return (0);
 }
 
 int	init_a(t_stacks *stacks, char *argv)
@@ -103,6 +136,8 @@ int	init_a(t_stacks *stacks, char *argv)
 	int *n;
 	int count;
 	t_list *ds;
+	int np;
+	int sort = 0;
 
 	str = ft_split(argv, ' ');
 	if (!str)
@@ -116,18 +151,33 @@ int	init_a(t_stacks *stacks, char *argv)
 		if (!n)
 			return (0);
 		*n = ft_atoi(*temp);
-		if (!chk_stacks(&ds, n))
+		if (!count || np < *n)
+			np = *n;
+		else
 		{
+			np = *n;
+			sort++;
+		}
+		if (!chk_dupes(&ds, n))
+		{
+			free_split(str);
+			ft_lstclear(&ds, free);
 			return (0);		
 		}
 		ft_lstadd_back(&stacks->a, ft_lstnew(n));
-		free(*temp);
 		count++;
 		temp++;
 	}
-	ft_printf("Count: %d\n", count);
+	ft_printf("Count: %d | Sort: %s\n", count, !sort ? "Yes":"No");
 	print_list(ds);
-	free(str);
+	free_split(str);
+	free_dupes(ds);
+	// free(ds->next->next);
+	// free(ds->next);
+	// free(ds);
+	// ft_lstclear(&ds, free);
+	if (sort)
+		free_stacks(stacks);
 	return (1);
 }
 
@@ -142,12 +192,6 @@ int	chck_arg(char *str)
 	return (1);
 }
 
-void	free_stacks(t_stacks *stacks)
-{
-	ft_lstclear(&stacks->a, free);
-	ft_lstclear(&stacks->b, free);
-}
-
 int	main(int argc, char **argv)
 {
 	t_stacks stacks;
@@ -159,10 +203,21 @@ int	main(int argc, char **argv)
 	init_stack(&stacks);
 	if (!init_a(&stacks, argv[1]))
 		return ft_printf("Error\n");
-	// print_stack(&stacks);
-	ps_pb(&stacks);
-	// print_stack(&stacks);
-	free_stacks(&stacks);
-	// print_stack(&stacks);
+	if (!chk_isort(&stacks))
+	{
+		free_stacks(&stacks);
+		return (0);
+	}
+	if (stacks.a)
+	{
+		// print_stack(&stacks);
+		ps_pb(&stacks);
+		// print_stack(&stacks);
+		free_stacks(&stacks);
+		// print_stack(&stacks);
+	}
+	ft_printf("test\n");
+	print_stack(&stacks);
+	// free_stacks(&stacks);
 	return (0);
 }
