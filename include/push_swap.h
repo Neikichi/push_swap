@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:11:57 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/10 18:39:45 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/13 03:04:23 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,16 @@ void	ps_rr(t_stacks *stacks);
 void	ps_rra(t_stacks *stacks);
 void	ps_rrb(t_stacks *stacks);
 void	ps_rrr(t_stacks *stacks);
+
+//stacks utils
+int		chk_dupes(t_list **ds, int *n);
+int		chk_isort(t_stacks *stacks);
+int		init_a(t_stacks *stacks, char *argv);
+void	print_stack(t_stacks *stacks);
+void	print_list(t_list *ds);
+void	free_stacks(t_stacks *stacks);
+void	free_split(char **str);
+void	free_dupes(t_list *ds);
+int		chck_arg(char *str);
 
 #endif
