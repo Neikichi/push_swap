@@ -6,23 +6,23 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 03:02:56 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/13 03:44:33 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/14 22:18:48 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "push_swap.h"
 
-int	main(int argc, char **argv)
+int	main(int ac, char **av)
 {
 	t_stacks stacks;
 
-	if (argc != 2)
+	if (ac < 2)
 		return ft_printf("Error\n");
-	if (!chck_arg(argv[1]))
+	if (!chck_arg(av + 1, ac))
 		return ft_printf("Error\n");
 	init_stack(&stacks);
-	if (!init_a(&stacks, argv[1]))
+	if (!init_a(&stacks, av + 1, ac))
 		return ft_printf("Error\n");
 	if (!chk_isort(&stacks))
 	{
@@ -31,14 +31,14 @@ int	main(int argc, char **argv)
 	}
 	if (stacks.a)
 	{
-		print_stack(&stacks);
-		ps_pb(&stacks);
 		// print_stack(&stacks);
-		free_stacks(&stacks);
+		// ps_pb(&stacks);
+		// print_stack(&stacks);
+		// free_stacks(&stacks);
 		// print_stack(&stacks);
 	}
-	ft_printf("test\n");
-	print_stack(&stacks);
+	// ft_printf("test\n");
+	// print_stack(&stacks);
 	// free_stacks(&stacks);
 	return (0);
 }

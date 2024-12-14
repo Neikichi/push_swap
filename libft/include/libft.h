@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 22:56:28 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/10 13:30:25 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/14 14:17:52 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int		ft_islower(int c);
 int		ft_tolower(int c);
 int		ft_toupper(int c);
 int		ft_isspace(int c);
+int		ft_issign(char c);
 
 // string function
 char	**ft_split(char const *s, char c);

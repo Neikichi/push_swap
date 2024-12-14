@@ -30,6 +30,7 @@ SRC = \
 	$(CHAR_DIR)/ft_isupper.c \
 	$(CHAR_DIR)/ft_tolower.c \
 	$(CHAR_DIR)/ft_toupper.c \
+	$(CHAR_DIR)/ft_issign.c \
 	$(IO_DIR)/ft_putchar_fd.c \
 	$(IO_DIR)/ft_putendl_fd.c \
 	$(IO_DIR)/ft_putnbr_fd.c \

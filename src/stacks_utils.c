@@ -6,13 +6,15 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 01:39:39 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/13 03:43:41 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/14 22:06:39 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "push_swap.h"
 #include <stdlib.h>
+
+static int	init_a_h(t_stacks *stacks, char **str, char **temp, int ac);
 
 int	chk_dupes_h(t_list **ds, int *n)
 {
@@ -68,17 +70,30 @@ int	chk_isort(t_stacks *stacks)
 	return (0);
 }
 
-int	init_a(t_stacks *stacks, char *argv)
+int	init_a(t_stacks *stacks, char **av, int ac)
 {
 	char	**str;
 	char	**temp;
+
+	if (ac == 2)
+	{
+		str = ft_split(*av, ' ');
+		if (!str || !chk_split(str, 0))
+			return (0);
+	}
+	if (ac > 2)
+		str = av;
+	temp = str;
+	if (!init_a_h(stacks, str, temp, ac))
+		return (0);
+	return (1);
+}
+
+static int	init_a_h(t_stacks *stacks, char **str, char **temp, int ac)
+{
 	int		*n;
 	t_list	*ds;
 
-	str = ft_split(argv, ' ');
-	if (!str)
-		return (0);
-	temp = str;
 	ds = NULL;
 	while (*temp)
 	{
@@ -88,14 +103,16 @@ int	init_a(t_stacks *stacks, char *argv)
 		*n = ft_atoi(*temp);
 		if (!chk_dupes(&ds, n))
 		{
-			free_split(str);
+			if (ac == 2)
+				free_split(str);
 			free_dupes(ds);
 			return (0);
 		}
 		ft_lstadd_back(&stacks->a, ft_lstnew(n));
 		temp++;
 	}
-	free_split(str);
+	if (ac == 2)
+		free_split(str);
 	free_dupes(ds);
 	return (1);
 }
