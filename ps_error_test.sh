@@ -19,18 +19,17 @@ fi
 trap "rm -f $LOG_FILE" EXIT
 
 # Function to test error handling
+# USAGE: check_error "arguments" test_id mode
+# mode can be "single" or "multi"
 check_error() {
     ARG="$1"
     TEST_ID="$2"
+    MODE="$3"
     EXPECTED_MESSAGE="Error"
 
-    # Debug: Print the command being executed and argument length
-    printf "Debug: Running command: ./push_swap \"$ARG\"\n"
-    printf "Debug: ARG length: ${#ARG}\n"
-
-    # Handle empty string explicitly
-    if [ -z "$ARG" ]; then
-        ./push_swap "" > "$LOG_FILE" 2>&1
+    # Run the command
+    if [ "$MODE" = "single" ]; then
+        ./push_swap "$ARG" > "$LOG_FILE" 2>&1
     else
         ./push_swap $ARG > "$LOG_FILE" 2>&1
     fi
@@ -38,27 +37,35 @@ check_error() {
     # Read the actual output
     ACTUAL_OUTPUT=$(cat "$LOG_FILE")
 
-    # Debug: Print output as hex
-    printf "Output (hex):\n"
-    hexdump -C "$LOG_FILE"
-
     # Check the output
     if [ -s "$LOG_FILE" ]; then
         if grep -qx "${EXPECTED_MESSAGE}" "$LOG_FILE"; then
-            printf "${GREEN}Test $TEST_ID: [OK] ${DEF_COLOR}\n"
+            # It's an error as expected
+            printf "${GREEN}Test $TEST_ID: [OK] ARG: '$ARG'${DEF_COLOR}\n"
         else
-            printf "${RED}Test $TEST_ID: [KO] Unexpected output. ${DEF_COLOR}\n"
+            # Unexpected output (KO)
+            printf "${RED}Test $TEST_ID: [KO] Unexpected output for ARG: '$ARG'${DEF_COLOR}\n"
             printf "Expected: ${GREEN}${EXPECTED_MESSAGE}${DEF_COLOR}\n"
             printf "Actual: ${RED}${ACTUAL_OUTPUT}${DEF_COLOR}\n"
+            printf "Debug Information:\n"
+            printf "Mode: $MODE\n"
+            printf "ARG length: ${#ARG}\n"
+            printf "Output (hex):\n"
+            hexdump -C "$LOG_FILE"
         fi
     else
-        printf "${RED}Test $TEST_ID: [KO] No output for error. ${DEF_COLOR}\n"
+        # No output (KO)
+        printf "${RED}Test $TEST_ID: [KO] No output for ARG: '$ARG'${DEF_COLOR}\n"
         printf "Expected: ${GREEN}${EXPECTED_MESSAGE}${DEF_COLOR}\n"
         printf "Actual: (No output)\n"
+        printf "Debug Information:\n"
+        printf "Mode: $MODE\n"
+        printf "ARG length: ${#ARG}\n"
+        printf "Output (hex):\n"
+        hexdump -C "$LOG_FILE"
     fi
 }
-
-# Original test cases for error checking
+# Test cases
 test_cases=(
     "a" "111a11" "hello world" "" "0 0" "111-1 2 -3"
     "-3 -2 -2" "\n" "-2147483649" "-2147483650" "2147483648"
@@ -74,34 +81,31 @@ test_cases=(
     "42 -2 10 11 0 90 45 500 -200 e"
 )
 
-# Additional edge cases
 additional_cases=(
     "42 42.0" "-42.5 43" "42+42" "42-" "-+42" "2147483647 2147483647"
     "-2147483648 -2147483648" " " "99999999999999999999" 
     "-99999999999999999999999999" "1e10" "4.2e+1" "00 000 0000" 
-    "+0001 -0002" "2147483648" "-2147483649"
+    "2147483648" "-2147483649"
 )
 
-# Run all test cases with the whole argument as a single quoted string
-printf "\n${GREEN}Testing with the whole argument as a single quoted string:${DEF_COLOR}\n"
+printf "\n${GREEN}Testing with the whole argument as a single argument:${DEF_COLOR}\n"
 for i in "${!test_cases[@]}"; do
-    check_error "\"${test_cases[$i]}\"" $((i + 1))
+    # Test as a single argument
+    check_error "${test_cases[$i]}" $((i + 1)) "single"
 done
 
-# Run additional cases with the whole argument as a single quoted string
 for i in "${!additional_cases[@]}"; do
-    check_error "\"${additional_cases[$i]}\"" $((i + ${#test_cases[@]} + 1))
+    check_error "${additional_cases[$i]}" $((i + ${#test_cases[@]} + 1)) "single"
 done
 
-# Run all test cases with the argument split into individual values
-printf "\n${GREEN}Testing with the argument split into individual values:${DEF_COLOR}\n"
+printf "\n${GREEN}Testing with the argument split into multiple arguments:${DEF_COLOR}\n"
 for i in "${!test_cases[@]}"; do
-    check_error "${test_cases[$i]}" $((i + 1))
+    # Test as multiple arguments
+    check_error "${test_cases[$i]}" $((i + 1)) "multi"
 done
 
-# Run additional cases with the argument split into individual values
 for i in "${!additional_cases[@]}"; do
-    check_error "${additional_cases[$i]}" $((i + ${#test_cases[@]} + 1))
+    check_error "${additional_cases[$i]}" $((i + ${#test_cases[@]} + 1)) "multi"
 done
 
 printf "\n${GREEN}Error checking script completed.${DEF_COLOR}\n"

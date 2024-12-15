@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 03:02:56 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/14 22:18:48 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/15 19:57:49 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 
 int	main(int ac, char **av)
 {
-	t_stacks stacks;
+	t_stacks	stacks;
 
 	if (ac < 2)
-		return ft_printf("Error\n");
+		return (ft_printf("Error\n"));
 	if (!chck_arg(av + 1, ac))
-		return ft_printf("Error\n");
+		return (ft_printf("Error\n"));
 	init_stack(&stacks);
 	if (!init_a(&stacks, av + 1, ac))
-		return ft_printf("Error\n");
+		return (ft_printf("Error\n"));
 	if (!chk_isort(&stacks))
 	{
 		free_stacks(&stacks);
