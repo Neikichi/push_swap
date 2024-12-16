@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 01:31:18 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/15 19:57:09 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/17 04:06:57 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	init_stack(t_stacks *stacks)
 {
 	stacks->a = NULL;
 	stacks->b = NULL;
+	stacks->ds = NULL;
 }
 
 void	split_print(char **str)

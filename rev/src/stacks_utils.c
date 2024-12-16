@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 01:39:39 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/16 19:57:10 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/17 04:18:50 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,16 @@
 #include <stdlib.h>
 
 static int	init_a_h(t_stacks *stacks, char **str, char **temp);
-static int	chk_dupes_h(t_list **ds, int *n);
+static int	chk_dupes_h(t_stacks *stacks, int *n);
 
-int	chk_dupes(t_list **ds, int *n)
+int	chk_dupes(t_stacks *stacks, int *n)
 {
 	t_list	*temp;
 	t_list	*ptr;
 
-	if (chk_dupes_h(ds, n))
+	if (chk_dupes_h(stacks, n))
 		return (1);
-	ptr = *ds;
+	ptr = stacks->ds;
 	while (ptr)
 	{
 		if (*(int *)ptr->content == *n)
@@ -45,15 +45,13 @@ int	chk_dupes(t_list **ds, int *n)
 	return (1);
 }
 
-static int	chk_dupes_h(t_list **ds, int *n)
+static int	chk_dupes_h(t_stacks *stacks, int *n)
 {
-	ft_printf("here | n:[%d] | ds.c:[%d]\n", *n, !*ds ? -1:*(int *)(*ds)->content);
-	if (!*ds || *(int *)(*ds)->content > *n)
-	{
-		ft_printf("here2 | n:[%d] | ds.c:[%d]\n", *n, !*ds ? -1:*(int *)(*ds)->content);
-		ft_lstadd_front(ds, ft_lstnew(n));
-		return (1);
-	}
+    if (!stacks->ds || *(int *)stacks->ds->content > *n)
+    {
+        ft_lstadd_front(&stacks->ds, ft_lstnew(n));
+        return (1);
+    }
 	return (0);
 }
 
@@ -82,7 +80,7 @@ int	init_a(t_stacks *stacks, char *av)
 	if (!str || !chk_split(str))
 		return (0);
 	temp = str;
-	split_print(str);
+	// split_print(str);
 	if (!init_a_h(stacks, str, temp))
 		return (0);
 	return (1);
@@ -91,28 +89,23 @@ int	init_a(t_stacks *stacks, char *av)
 static int	init_a_h(t_stacks *stacks, char **str, char **temp)
 {
 	int		*n;
-	t_list	*ds;
 
-	ds = NULL;
 	while (*temp)
 	{
 		n = malloc(sizeof(int));
 		if (!n)
 			return (0);
 		*n = ft_atoi(*temp);
-		ft_printf("here1\n");
-		if (!chk_dupes(&ds, n))
+		if (!chk_dupes(stacks, n))
 		{
-			ft_printf("here2\n");
 			free_split(str);
-			free_dupes(ds);
+			// free_dupes(stacks);
 			return (0);
 		}
-		ft_printf("here3\n");
 		ft_lstadd_back(&stacks->a, ft_lstnew(n));
 		temp++;
 	}
 	free_split(str);
-	free_dupes(ds);
+	// free_dupes(stacks);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 03:05:23 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/16 19:47:29 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/17 04:20:46 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ int	chk_split(char **str)
 {
 	char	**temp;
 
+	if (!str || !*str || !**str)
+		return (0);
 	temp = str;
 	while (*temp)
 	{

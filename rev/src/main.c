@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 03:02:56 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/16 19:12:36 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/17 04:36:57 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int	main(int ac, char **av)
 		return (ft_printf("Error\n"));
 	// if (!init_a(&stacks, av, ac))
 	// 	return (ft_printf("Error\n"));
+	// print_ds(&stacks);
+	print_stack(&stacks);
 	if (!chk_isort(&stacks))
 	{
 		free_stacks(&stacks);
