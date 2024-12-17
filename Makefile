@@ -53,8 +53,8 @@ fclean: clean
 
 re: fclean all
 
-# debug: CFLAGS += -g -fpic
-# debug: fclean all
-# 	@echo "Enable debug mode"
+debug: CFLAGS += -g #-fpic
+debug: fclean all
+	@echo "Enable debug mode"
 
-.PHONY: all clean fclean re bonus #debug
+.PHONY: all clean fclean re bonus debug

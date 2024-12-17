@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 22:38:55 by vlow              #+#    #+#             */
-/*   Updated: 2024/11/09 22:38:57 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/16 16:08:08 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ t_list	*ft_lstnew(void *content)
 	node = malloc(sizeof(t_list));
 	if (!node)
 		return (NULL);
+	node->idx = 0;
 	node->content = content;
 	node->next = NULL;
 	return (node);

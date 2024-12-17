@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 01:39:39 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/14 22:06:39 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/17 21:07:54 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,17 @@
 #include "push_swap.h"
 #include <stdlib.h>
 
-static int	init_a_h(t_stacks *stacks, char **str, char **temp, int ac);
+static int	init_a_h(t_stacks *stacks, char **str, char **temp);
+static int	chk_dupes_h(t_stacks *stacks, int *n);
 
-int	chk_dupes_h(t_list **ds, int *n)
-{
-	if (!*ds || *(int *)(*ds)->content > *n)
-	{
-		ft_lstadd_front(ds, ft_lstnew(n));
-		return (1);
-	}
-	return (0);
-}
-
-int	chk_dupes(t_list **ds, int *n)
+int	chk_dupes(t_stacks *stacks, int *n)
 {
 	t_list	*temp;
 	t_list	*ptr;
 
-	if (chk_dupes_h(ds, n))
+	if (chk_dupes_h(stacks, n))
 		return (1);
-	ptr = *ds;
+	ptr = stacks->ds;
 	while (ptr)
 	{
 		if (*(int *)ptr->content == *n)
@@ -54,6 +45,16 @@ int	chk_dupes(t_list **ds, int *n)
 	return (1);
 }
 
+static int	chk_dupes_h(t_stacks *stacks, int *n)
+{
+	if (!stacks->ds || *(int *)stacks->ds->content > *n)
+	{
+		ft_lstadd_front(&stacks->ds, ft_lstnew(n));
+		return (1);
+	}
+	return (0);
+}
+
 int	chk_isort(t_stacks *stacks)
 {
 	t_list	*ta;
@@ -70,49 +71,38 @@ int	chk_isort(t_stacks *stacks)
 	return (0);
 }
 
-int	init_a(t_stacks *stacks, char **av, int ac)
+int	init_a(t_stacks *stacks, char *av)
 {
 	char	**str;
 	char	**temp;
 
-	if (ac == 2)
-	{
-		str = ft_split(*av, ' ');
-		if (!str || !chk_split(str, 0))
-			return (0);
-	}
-	if (ac > 2)
-		str = av;
+	str = ft_split(av, ' ');
+	if (!str || !chk_split(str))
+		return (0);
 	temp = str;
-	if (!init_a_h(stacks, str, temp, ac))
+	if (!init_a_h(stacks, str, temp))
 		return (0);
 	return (1);
 }
 
-static int	init_a_h(t_stacks *stacks, char **str, char **temp, int ac)
+static int	init_a_h(t_stacks *stacks, char **str, char **temp)
 {
 	int		*n;
-	t_list	*ds;
 
-	ds = NULL;
 	while (*temp)
 	{
 		n = malloc(sizeof(int));
 		if (!n)
 			return (0);
 		*n = ft_atoi(*temp);
-		if (!chk_dupes(&ds, n))
+		if (!chk_dupes(stacks, n))
 		{
-			if (ac == 2)
-				free_split(str);
-			free_dupes(ds);
+			free_split(str);
 			return (0);
 		}
 		ft_lstadd_back(&stacks->a, ft_lstnew(n));
 		temp++;
 	}
-	if (ac == 2)
-		free_split(str);
-	free_dupes(ds);
+	free_split(str);
 	return (1);
 }

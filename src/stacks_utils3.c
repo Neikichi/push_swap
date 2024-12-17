@@ -5,114 +5,58 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/13 03:05:23 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/15 19:53:01 by vlow             ###   ########.fr       */
+/*   Created: 2024/12/13 01:40:33 by vlow              #+#    #+#             */
+/*   Updated: 2024/12/17 21:18:20 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "push_swap.h"
-#include <limits.h>
+#include <stdlib.h>
 
-static int	err_ac(char **str, int ac);
-static int	err_nodigit(char *av);
+void	init_stack(t_stacks *stacks)
+{
+	stacks->a = NULL;
+	stacks->b = NULL;
+	stacks->ds = NULL;
+	stacks->size = 0;
+}
 
-int	chck_arg(char **av, int ac)
+void	free_stacks(t_stacks *stacks)
+{
+	ft_lstclear(&stacks->a, free);
+	ft_lstclear(&stacks->b, free);
+	free_ds(stacks);
+}
+
+void	free_split(char **str)
 {
 	char	**temp;
 
-	temp = av;
-	if (!av || !*av || !**av)
-		return (0);
-	while (*temp)
-	{
-		if (!err_nodigit(*temp))
-			return (0);
-		temp++;
-	}
-	if (!chk_split(av, ac))
-		return (0);
-	return (1);
-}
-
-static int	err_nodigit(char *av)
-{
-	char	*temp;
-	int		dg;
-
-	dg = 0;
-	temp = av;
-	while (*temp)
-	{
-		if (ft_isalpha(*temp) || *temp == '.')
-			return (0);
-		if (ft_issign(*temp) && (*(temp + 1) && ft_issign(*(temp + 1))))
-			return (0);
-		if (ft_isdigit(*temp))
-		{
-			if (*(temp + 1) && ft_issign(*(temp + 1)))
-				return (0);
-			dg++;
-		}
-		temp++;
-	}
-	if (dg)
-		return (1);
-	return (0);
-}
-
-static int	err_ac(char **str, int ac)
-{
-	if (!ac)
-		free_split(str);
-	return (0);
-}
-
-int	chk_split(char **str, int ac)
-{
-	char	**temp;
-
+	if (!str)
+		return ;
 	temp = str;
 	while (*temp)
 	{
-		if (**temp)
-		{
-			if (!chk_atoi(*temp))
-				return (err_ac(str, ac));
-			if (ft_issign(**temp))
-			{
-				if (!((*temp)[1]) || !ft_isdigit((*temp)[1]))
-					return (err_ac(str, ac));
-			}
-		}
+		free(*temp);
 		temp++;
 	}
-	return (1);
+	free(str);
 }
 
-int	chk_atoi(const char *nptr)
+void	free_ds(t_stacks *stacks)
 {
-	int			neg;
-	long int	amt;
+	t_list	*ptr;
+	t_list	*temp;
 
-	amt = 0;
-	neg = 0;
-	while (ft_isspace(*nptr))
+	if (!stacks->ds)
+		return ;
+	ptr = stacks->ds->next;
+	while (ptr)
 	{
-		nptr++;
+		temp = ptr->next;
+		free(ptr);
+		ptr = temp;
 	}
-	if (*nptr == '-' || *nptr == '+')
-	{
-		if (*nptr == '-')
-			neg = 1;
-		nptr++;
-	}
-	while (ft_isdigit(*nptr))
-	{
-		amt = amt * 10 + (*nptr - '0');
-		if ((!neg && (amt > INT_MAX)) || (neg && (-amt < INT_MIN)))
-			return (0);
-		nptr++;
-	}
-	return (1);
+	free(stacks->ds);
 }

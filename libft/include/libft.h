@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 22:56:28 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/14 14:17:52 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/16 16:07:45 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 // Linked List
 typedef struct s_list
 {
+	int				idx;
 	void			*content;
 	struct s_list	*next;
 }					t_list;
