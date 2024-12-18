@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 17:36:46 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/17 21:17:31 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/18 17:31:05 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,25 +26,25 @@ void	print_stack(t_stacks *stacks)
 	ta = stacks->a;
 	tb = stacks->b;
 	ts = stacks->ds;
-	ft_printf("Stack A		|	Stack B	 |	Ds	| Size: %d\n", stacks->size);
+	ft_printf("%-19s|%19s|	Ds	| Size: %d\n", "Stacks A", "Stacks B     ", stacks->size);
 	while (ta || tb)
 	{
 		if (ta)
 		{
-			ft_printf("[%d]: %-11d", ta->idx, *(int *)ta->content);
+			ft_printf("[%3d]: %-12d", ta->idx, *(int *)ta->content);
 			ta = ta->next;
 		}
 		else
-			ft_printf("%-15c", ' ');
-		ft_printf("| ");
+			ft_printf("%-19c", ' ');
+		ft_printf("|");
 		if (tb)
 		{
-			ft_printf("%15d ", *(int *)tb->content);
+			ft_printf("[%3d]: %-12d", tb->idx, *(int *)tb->content);
 			tb = tb->next;
 		}
 		else
-			ft_printf("%15c", ' ');
-		ft_printf("| ");
+			ft_printf("%19c", ' ');
+		ft_printf("|");
 		if (ts)
 		{
 			ft_printf("uI:%d = %d = i: %d", size++, *(int *)ts->content, ts->idx);

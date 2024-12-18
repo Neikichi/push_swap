@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 21:11:59 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/17 22:16:17 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/18 16:58:13 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,9 @@ void	ps_init(t_stacks *stacks)
 	if (stacks->size > 3 && stacks->size <= 10)
 	{
 		ps_simple_ex(stacks);
+	}
+	else
+	{
+		ps_sort(stacks);
 	}
 }
