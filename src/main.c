@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 03:02:56 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/18 18:24:03 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/21 17:09:15 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	main(int ac, char **av)
 		free_stacks(&stacks);
 		return (0);
 	}
-	print_stack(&stacks);
+	// print_stack(&stacks);
 	if (stacks.a)
 	{
 		ps_init(&stacks);
@@ -38,7 +38,7 @@ int	main(int ac, char **av)
 		// print_stack(&stacks);
 	}
 	// ft_printf("test\n");
-	print_stack(&stacks);
+	// print_stack(&stacks);
 	free_stacks(&stacks);
 	return (0);
 }

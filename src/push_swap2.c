@@ -6,12 +6,21 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 16:03:44 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/18 18:44:51 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/22 22:02:18 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "push_swap.h"
+#include <stdlib.h>
+#include <limits.h>
+
+void	ps_qsa(t_stacks *stacks);
+void	ps_qsb(t_stacks *stacks);
+int	ft_lstfind(t_list *lst, int target);
+int	ft_lstrfind(t_list *lst, int target);
+// void	qs_try(t_stacks *stacks, int size);
+// void	qs_tryb(t_stacks *stacks, int size);
 
 void	ps_sort(t_stacks *stacks)
 {
@@ -44,18 +53,248 @@ void	ps_sort(t_stacks *stacks)
 		}
 	}
 	ps_qs(stacks);
+	// ps_qsb(stacks);
+	// ft_printf("|| median: %d\n", find_median(stacks->a, ft_lstsize(stacks->a)));
+	// qs_try(stacks, stacks->size);
 }
 
 void	ps_qs(t_stacks *stacks)
 {
-	while (chk_isort(stacks))
+	while (ft_lstsize(stacks->a) > 3)
 	{
-		if (stacks->a->idx > stacks->a->next->idx)
+		// if (stacks->a->idx != stacks->size && (stacks->a->idx != stacks->a->next->idx - 1 || stacks->a->idx != stacks->ea->idx + 1))
+		int p = find_median(stacks->a, ft_lstsize(stacks->a));
+		if (stacks->a->idx < p)
 		{
 			ps_pb(stacks);
+			// ps_qsa(stacks);
 		}
+		else
+			ps_ra(stacks);
+	}
+	ps_simple_a(stacks);
+	// ps_qsb(stacks);
+	while (stacks->b)
+	{
+		ps_qsb(stacks);
+		ps_qsa(stacks);
+		if (ft_lstfind(stacks->a, stacks->size) < ft_lstrfind(stacks->a, stacks->size))
+		{
+			while (stacks->ea->idx != stacks->size)
+				ps_ra(stacks);
+		}
+		else
+			while (stacks->ea->idx != stacks->size)
+				ps_rra(stacks);
+		// ps_ra(stacks);
+	}
+	while (chk_isort(stacks))
+	{
 		ps_ra(stacks);
 	}
+
+
+	// int p = find_median(stacks->a, ft_lstsize(stacks->a));
+	// int cs = ft_lstsize(stacks->a);
+	// if (cs <= 3)
+	// {
+	// 	ps_simple_a(stacks);
+	// 	return ;
+	// }
+	// // int n = stacks->ea->idx;
+	// // int p = (cs / 2) + 67;
+	// // int i = cs;
+	// while (ft_lstsize(stacks->a) > 3)
+	// {
+	// 	if (stacks->a->idx <= p)
+	// 		ps_pb(stacks);
+	// 	else
+	// 		ps_ra(stacks);
+	// }
+	// ps_qsb(stacks);
+	// ps_qs(stacks);
+}
+
+// void	qs_try(t_stacks *stacks, int size)
+// {
+// 	if (size <= 3)
+// 	{
+// 		ps_simple_a(stacks);
+// 		return ;
+// 	}
+//
+// 	int pivot = find_median(stacks->a, size);
+// 	int i = 0;
+// 	int ptb = 0;
+//
+// 	while (i++ < size)
+// 	{
+// 		if (stacks->a->idx < pivot)
+// 		{
+// 			ps_pb(stacks);
+// 			ptb++;
+// 		}
+// 		else
+// 			ps_ra(stacks);
+// 	}
+// 	qs_try(stacks, size - ptb);
+// 	qs_tryb(stacks, ptb);
+//
+// 	while (ptb--)
+// 		ps_pa(stacks);
+// }
+//
+// void	qs_tryb(t_stacks *stacks, int size)
+// {
+// 	if (size <= 3)
+// 	{
+// 		ps_simple_b(stacks);
+// 		return ;
+// 	}
+//
+// 	int pivot = find_median(stacks->b, size);
+// 	int i = 0;
+// 	int ptb = 0;
+//
+// 	while (i++ < size)
+// 	{
+// 		if (stacks->b->idx < pivot)
+// 		{
+// 			ps_pa(stacks);
+// 			ptb++;
+// 		}
+// 		else
+// 			ps_rb(stacks);
+// 	}
+// 	qs_try(stacks, size - ptb);
+// 	qs_tryb(stacks, ptb);
+//
+// 	while (ptb--)
+// 		ps_pb(stacks);
+// }
+//
+// void	ps_qsx(t_stacks  *stacks)
+// {
+// 	int p = stacks->b->idx;
+// 	int cs = ps_ic(p, stacks->size);
+//
+// 	if (cs != 3)
+// 		return ;
+// 	int ic = ps_ic(stacks->b->idx, stacks->size);
+// 	int icn = ps_ic(stacks->b->next->idx, stacks->size);
+// 	while (ic == 3 || icn == 3)
+// 	{
+// 		if (stacks->b->idx <= p)
+// 			ps_pa(stacks);
+// 		else
+// 			ps_rb(stacks);
+// 	}
+// }
+
+void	ps_qsa(t_stacks *stacks)
+{
+	while (stacks->b)
+	{
+		int target = stacks->a->idx - 1;
+		// int fdist = ft_lstfind(stacks->a, target);
+		// int rdist = ft_lstrfind(stacks->a, target);
+		int xfdb = ft_lstfind(stacks->b, target);
+		int xrdb = ft_lstrfind(stacks->b, target);
+
+		if (target == stacks->b->idx)
+		{
+			ps_pa(stacks);
+		}
+		else if (xfdb == -1)
+		{
+			// ps_qsb(stacks);
+			break ;
+			// if (xfdb <= xrdb)
+			// 	while (stacks->b->idx != target)
+			// 		ps_rb(stacks);
+			// else
+			// 	while (stacks->b->idx != target)
+			// 		ps_rrb(stacks);
+		}
+		else if (xfdb <= xrdb)
+			while (stacks->b->idx != target)
+				ps_rb(stacks);
+		else
+		{
+			while (stacks->b->idx != target)
+				ps_rrb(stacks);
+		}
+	}
+}
+
+void	ps_qsb(t_stacks *stacks)
+{
+	while (stacks->b)
+	{
+		int target = stacks->b->idx + 1;
+		int fdist = ft_lstfind(stacks->a, target);
+		int rdist = ft_lstrfind(stacks->a, target);
+		// int xfdb = ft_lstfind(stacks->b, target);
+		// int xrdb = ft_lstrfind(stacks->b, target);
+
+		if (target == stacks->a->idx)
+		{
+			ps_pa(stacks);
+		}
+		else if (fdist == -1)
+		{
+			// ps_qsa(stacks);
+			break ;
+			// if (xfdb <= xrdb)
+			// 	while (stacks->b->idx != target)
+			// 		ps_rb(stacks);
+			// else
+			// 	while (stacks->b->idx != target)
+			// 		ps_rrb(stacks);
+		}
+		else if (fdist <= rdist)
+			while (stacks->a->idx != target)
+				ps_ra(stacks);
+		else
+		{
+			while (stacks->a->idx != target)
+				ps_rra(stacks);
+		}
+	}
+}
+
+int	ft_lstfind(t_list *lst, int target)
+{
+	int dist = 0;
+
+	while (lst)
+	{
+		if (lst->idx == target)
+			break ;
+		lst = lst->next;
+		dist++;
+	}
+	if (!lst)
+		return (-1);
+	return (dist);
+}
+
+int	ft_lstrfind(t_list *lst, int target)
+{
+	int dist = 0;
+	t_list *temp = NULL;
+
+	while (lst)
+	{
+		if (lst->idx == target)
+			temp = lst;
+		if (temp)
+			dist++;
+		lst = lst->next;
+	}
+	if (!temp)
+		return (-1);
+	return (dist);
 }
 
 void	ps_sc(t_stacks *stacks)

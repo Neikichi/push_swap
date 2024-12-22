@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 01:40:33 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/17 21:18:20 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/21 17:34:49 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	init_stack(t_stacks *stacks)
 	stacks->b = NULL;
 	stacks->ds = NULL;
 	stacks->size = 0;
+	stacks->ea = NULL;
+	stacks->eb = NULL;
 }
 
 void	free_stacks(t_stacks *stacks)

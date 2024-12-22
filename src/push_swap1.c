@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 21:25:53 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/18 15:51:47 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/22 16:25:01 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,40 @@ void	ps_simple_a(t_stacks *stacks)
 
 void	ps_simple_b(t_stacks *stacks)
 {
-	while (chk_isort(stacks))
-	{
-		if (stacks->b->idx == stacks->size)
-			ps_ra(stacks);
-		else if (stacks->b->idx > stacks->b->next->idx)
-			ps_sa(stacks);
-		else
-			ps_rra(stacks);
-	}
+    // // Ensure stack_b has at least three elements
+    // if (!stacks->b || !stacks->b->next || !stacks->b->next->next)
+    //     return;
+    //
+    int a = stacks->b->idx;
+    int b = stacks->b->next->idx;
+    int c = stacks->b->next->next->idx;
+
+    // Already sorted in descending order
+    if (a > b && b > c)
+        return;
+    // a > c > b: Bring c to top, swap to correct order
+    else if (a > c && c > b) {
+        ps_rrb(stacks); // Rotate downwards
+        ps_sb(stacks);  // Swap top two
+    }
+    // b > a > c: Swap top two
+    else if (b > a && a > c) {
+        ps_sb(stacks);
+    }
+    // b > c > a: Rotate upwards
+    else if (b > c && c > a) {
+        ps_rb(stacks);
+    }
+    // c > a > b: Swap and rotate upwards
+    else if (c > a && a > b) {
+        ps_sb(stacks);
+        ps_rb(stacks);
+    }
+    // c > b > a: Swap and rotate downwards
+    else if (c > b && b > a) {
+        ps_sb(stacks);
+        ps_rrb(stacks);
+    }
 }
 
 void	ps_simple_ex(t_stacks *stacks)

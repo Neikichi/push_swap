@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:11:57 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/18 18:32:13 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/22 15:55:08 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ typedef struct s_stacks
 	struct s_list	*a;
 	struct s_list	*b;
 	struct s_list	*ds;
+	t_list			*ea;
+	t_list			*eb;
 	int				size;
 }	t_stacks;
 // can use the libft list with void ptr.
@@ -71,5 +73,9 @@ int		chk_atoi(const char *nptr);
 void	print_stack(t_stacks *stacks);
 void	print_ds(t_stacks *stacks);
 void	split_print(char **str);
+
+void ps_quick_sort(t_stacks *stacks);
+void quicksort(int *arr, int low, int high);
+int find_median(t_list *s, int count);
 
 #endif
