@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 21:25:53 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/22 16:25:01 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/23 16:24:26 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,49 @@
 
 void	ps_simple_a(t_stacks *stacks)
 {
-	while (chk_isort(stacks))
-	{
-		if (stacks->a->idx == stacks->size)
-			ps_ra(stacks);
-		else if (stacks->a->idx > stacks->a->next->idx)
-			ps_sa(stacks);
-		else
-			ps_rra(stacks);
-	}
+    // Ensure stack_a has at least three elements
+    if (!stacks->a || !stacks->a->next || !stacks->a->next->next)
+        return;
+
+    int a = stacks->a->idx;
+    int b = stacks->a->next->idx;
+    int c = stacks->a->next->next->idx;
+
+    // Already sorted in ascending order
+    if (a < b && b < c)
+        return;
+    // a < c < b: Bring c to top, swap to correct order
+    else if (a < c && c < b) {
+        ps_rra(stacks); // Rotate downwards
+        ps_sa(stacks);  // Swap top two
+    }
+    // b < a < c: Swap top two
+    else if (b < a && a < c) {
+        ps_sa(stacks);
+    }
+    // b < c < a: Rotate upwards
+    else if (b < c && c < a) {
+        ps_ra(stacks);
+    }
+    // c < a < b: Swap and rotate upwards
+    else if (c < a && a < b) {
+        ps_sa(stacks);
+        ps_ra(stacks);
+    }
+    // c < b < a: Swap and rotate downwards
+    else if (c < b && b < a) {
+        ps_sa(stacks);
+        ps_rra(stacks);
+    }
+	// while (chk_isort(stacks))
+	// {
+	// 	if (stacks->a->idx == stacks->size)
+	// 		ps_ra(stacks);
+	// 	else if (stacks->a->idx > stacks->a->next->idx)
+	// 		ps_sa(stacks);
+	// 	else
+	// 		ps_rra(stacks);
+	// }
 }
 
 void	ps_simple_b(t_stacks *stacks)
