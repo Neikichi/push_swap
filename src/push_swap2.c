@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 16:03:44 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/23 22:07:11 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/24 03:30:50 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,9 @@ void	ps_qs(t_stacks *stacks)
 
 void	qs_try(t_stacks *stacks, int size)
 {
-	if (size <= 1)
+	if (size <= 3)
 	{
-		// ps_simple_a(stacks);
+		ps_simple(stacks, 0);
 		return ;
 	}
 
@@ -127,29 +127,45 @@ void	qs_try(t_stacks *stacks, int size)
 	// ft_printf("p: [%d]\n", pivot);
 	int i = 0;
 	int ptb = 0;
+	int rri = 0;
 
 	while (i++ < size)
 	{
 		if (stacks->a->idx < pivot)
 		{
-			ps_pb(stacks);
+			int ic = ps_ic(stacks->a->idx, size);
+			if (ic == 1)
+				ps_sc(stacks);
+			else if (ic == 2)
+				ps_mc(stacks);
+			else
+				ps_pb(stacks);
 			ptb++;
 		}
 		else
+		{
 			ps_ra(stacks);
+			rri++;
+		}
 	}
+	while (rri--)
+		ps_rra(stacks);
 	qs_try(stacks, size - ptb);
-	qs_tryb(stacks, ptb);
+	// qs_tryb(stacks, ptb);
 
 	while (ptb--)
+	{
+		ps_simple(stacks, 0);
+		ps_simple(stacks, 1);
 		ps_pa(stacks);
+	}
 }
 
 void	qs_tryb(t_stacks *stacks, int size)
 {
-	if (size <= 1)
+	if (size <= 3)
 	{
-		// ps_simple_b(stacks);
+		ps_simple(stacks, 1);
 		return ;
 	}
 
@@ -157,6 +173,7 @@ void	qs_tryb(t_stacks *stacks, int size)
 	// ft_printf("bp: [%d]\n", pivot);
 	int i = 0;
 	int pta = 0;
+	int rri = 0;
 
 	while (i++ < size)
 	{
@@ -166,8 +183,13 @@ void	qs_tryb(t_stacks *stacks, int size)
 			pta++;
 		}
 		else
+		{
 			ps_rb(stacks);
+			rri++;
+		}
 	}
+	while (rri--)
+		ps_rrb(stacks);
 	qs_tryb(stacks, size - pta);
 	qs_try(stacks, pta);
 

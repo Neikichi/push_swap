@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:11:57 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/22 15:55:08 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/24 01:41:11 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,11 @@ void	ps_sc(t_stacks *stacks);
 void	ps_mc(t_stacks *stacks);
 void	ps_lc(t_stacks *stacks);
 void	ps_qs(t_stacks *stacks);
+void	ps_simple_3a(t_stacks *stacks);
+void	ps_simple_3b(t_stacks *stacks);
+void	ps_simple_2a(t_stacks *stacks);
+void	ps_simple_2b(t_stacks *stacks);
+void ps_simple(t_stacks *stacks, int z);
 
 //push swap utils
 void	init_stack(t_stacks *stacks);
