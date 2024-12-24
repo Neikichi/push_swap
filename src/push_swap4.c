@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 15:44:04 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/22 15:50:58 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/24 15:55:59 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 #include "push_swap.h"
 #include <stdlib.h> // Required for malloc and qsort
 
-int find_median(t_list *s, int count) {
-    if (!s || count <= 0)
-        return 0; // or handle error appropriately
-
+int find_median(t_list *s, int count)
+{
+	if (!s || count <= 0)
+		return 0;
+	// count /= 3;
     int *arr = malloc(sizeof(int) * count);
     if (!arr)
         return 0; // or handle allocation failure

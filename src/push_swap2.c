@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 16:03:44 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/24 03:30:50 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/24 16:13:26 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,13 +133,33 @@ void	qs_try(t_stacks *stacks, int size)
 	{
 		if (stacks->a->idx < pivot)
 		{
-			int ic = ps_ic(stacks->a->idx, size);
-			if (ic == 1)
-				ps_sc(stacks);
-			else if (ic == 2)
-				ps_mc(stacks);
-			else
-				ps_pb(stacks);
+			// ps_pb(stacks);
+			// int ic = ps_ic(stacks->a->idx, size);
+			// if (ic == 1)
+			// 	ps_sc(stacks);
+			// else if (ic == 2)
+			// 	ps_mc(stacks);
+			// else
+			// // 	ps_pb(stacks);
+			// ps_simple(stacks, 1);
+			if (stacks->b && stacks->a->idx - 1 != stacks->b->idx)
+			{
+				int xf = ft_lstfind(stacks->b, stacks->a->idx - 1);
+				int xr = ft_lstrfind(stacks->b, stacks->a->idx - 1);
+				if (xf == -1)
+					ps_pb(stacks);
+				else if (xf < xr)
+				{
+					while (stacks->b->idx != stacks->a->idx - 1)
+						ps_rb(stacks);
+				}
+				else
+				{
+					while (stacks->b->idx != stacks->a->idx - 1)
+						ps_rrb(stacks);
+				}
+			}
+			ps_pb(stacks);
 			ptb++;
 		}
 		else
@@ -148,15 +168,24 @@ void	qs_try(t_stacks *stacks, int size)
 			rri++;
 		}
 	}
-	while (rri--)
-		ps_rra(stacks);
+	// while (rri--)
+	// 	ps_rra(stacks);
 	qs_try(stacks, size - ptb);
 	// qs_tryb(stacks, ptb);
 
 	while (ptb--)
 	{
-		ps_simple(stacks, 0);
-		ps_simple(stacks, 1);
+		// ps_simple(stacks, 0);
+		// ps_simple(stacks, 1);
+		if (stacks->a->idx != stacks->b->idx - 1)
+		{
+			if (ft_lstfind(stacks->b, stacks->a->idx - 1) < ft_lstrfind(stacks->b, stacks->a->idx - 1))
+				while (stacks->b->idx != stacks->a->idx - 1)
+					ps_rb(stacks);
+			else
+				while (stacks->b->idx != stacks->a->idx - 1)
+					ps_rrb(stacks);
+		}
 		ps_pa(stacks);
 	}
 }
@@ -290,7 +319,6 @@ void	ps_qsb(t_stacks *stacks)
 int	ft_lstfind(t_list *lst, int target)
 {
 	int dist = 0;
-
 	while (lst)
 	{
 		if (lst->idx == target)
@@ -307,7 +335,6 @@ int	ft_lstrfind(t_list *lst, int target)
 {
 	int dist = 0;
 	t_list *temp = NULL;
-
 	while (lst)
 	{
 		if (lst->idx == target)
