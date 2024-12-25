@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 15:44:04 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/24 15:55:59 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/25 19:10:34 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int find_median(t_list *s, int count)
     // Use qsort to sort the array
     quicksort(arr, 0, count - 1);
 
-    int pivot = arr[count / 2]; // Median value
+    int pivot = arr[count / 10];
     free(arr);
     return pivot;
 }
