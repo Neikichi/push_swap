@@ -6,13 +6,52 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 15:44:04 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/25 19:10:34 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/26 21:13:02 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "push_swap.h"
 #include <stdlib.h> // Required for malloc and qsort
+
+int find_pivot(t_list *s, int count, int flag)
+{
+    if (!s || count <= 0)
+        return 0;
+
+    int *arr = malloc(sizeof(int) * count);
+    if (!arr)
+        return 0; // Handle allocation failure
+
+    // Populate the array with indices from the linked list
+    t_list *tmp = s;
+    for (int i = 0; i < count; i++) {
+        arr[i] = tmp->idx;
+        tmp = tmp->next;
+    }
+
+    // Sort the array
+    quicksort(arr, 0, count - 1);
+
+    // Calculate the pivots
+    int first_pivot_idx = count / 3;
+    int second_pivot_idx = (count / 3) * 2;
+
+    // Handle edge cases where count is not perfectly divisible by 3
+    if (first_pivot_idx >= count)
+        first_pivot_idx = count - 1;
+    if (second_pivot_idx >= count)
+        second_pivot_idx = count - 1;
+
+    int pivot = arr[first_pivot_idx];  // First third pivot
+    int px2 = arr[second_pivot_idx];  // Second third pivot
+
+    free(arr);
+
+    // Return the appropriate pivot based on the flag
+    return flag ? px2 : pivot;
+}
+
 
 int find_median(t_list *s, int count)
 {
@@ -26,13 +65,13 @@ int find_median(t_list *s, int count)
     t_list *tmp = s;
     for (int i = 0; i < count; i++) {
         arr[i] = tmp->idx;
-        tmp = tmp->next;
+        tmp =tmp->next;
     }
 
     // Use qsort to sort the array
     quicksort(arr, 0, count - 1);
 
-    int pivot = arr[count / 10];
+    int pivot = arr[count / 3];
     free(arr);
     return pivot;
 }

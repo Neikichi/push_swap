@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:11:57 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/24 01:41:11 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/26 21:13:30 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,5 +82,6 @@ void	split_print(char **str);
 void ps_quick_sort(t_stacks *stacks);
 void quicksort(int *arr, int low, int high);
 int find_median(t_list *s, int count);
+int find_pivot(t_list *s, int count, int flag);
 
 #endif

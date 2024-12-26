@@ -53,7 +53,7 @@ fclean: clean
 
 re: fclean all
 
-debug: CFLAGS += -g #-fpic
+debug: CFLAGS += -g -fpic
 debug: fclean all
 	@echo "Enable debug mode"
 

@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 16:03:44 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/25 21:41:22 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/26 21:55:12 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,24 +52,33 @@ void	ps_sort(t_stacks *stacks)
 	// 		// to be sorted once mid and small sent to b
 	// 	}
 	// }
-	ps_qs(stacks);
-	ps_qsb(stacks);
+	// ps_qs(stacks);
+	// ps_qsb(stacks);
 	// ft_printf("|| median: %d\n", find_median(stacks->a, ft_lstsize(stacks->a)));
-	// qs_try(stacks, stacks->size);
+	qs_try(stacks, stacks->size);
 }
 
 void	ps_qs(t_stacks *stacks)
 {
+	// int p = find_median(stacks->a, ft_lstsize(stacks->a));
+	int i = 0;
+
 	while (ft_lstsize(stacks->a) > 3)
 	{
 		// if (stacks->a->idx != stacks->size && (stacks->a->idx != stacks->a->next->idx - 1 || stacks->a->idx != stacks->ea->idx + 1))
 		int p = find_median(stacks->a, ft_lstsize(stacks->a));
-		if (stacks->a->idx <= p)
+		if (stacks->a->idx <= p )
 		{
 			ps_pb(stacks);
 			// ft_printf("p: [%d] | p2: [%d] | i: [%d]\n", p, p / 2, stacks->b->idx);
+			i++;
 			if (stacks->b->idx <= (p / 2) && ft_lstsize(stacks->b) > 2)
 				ps_rb(stacks);
+			if (i == 10)
+			{
+				p += i;
+				i = 0;
+			}
 			// ps_qsa(stacks);
 		}
 		else
@@ -128,74 +137,115 @@ void	qs_try(t_stacks *stacks, int size)
 		return ;
 	}
 
-	int pivot = find_median(stacks->a, size);
+	int pivot = find_pivot(stacks->a, size, 0);
+	int pivot2 = find_pivot(stacks->a, size, 1);
+	int bz = 0;
+	int mz = 0;
+	int sz = 0;
 	int i = 0;
-	int ptb = 0;
-	int rri = 0;
+	// int d = 1;
+	// ft_printf("depth[%d]\n", d);
+	// d++;
 
 	while (i++ < size)
 	{
+		// ft_printf("p: [%d] | p2: [%d] | i: [%d]\n", pivot, pivot2, stacks->a->idx);
 		if (stacks->a->idx <= pivot)
 		{
 			ps_pb(stacks);
-			// ft_printf("p: [%d] | p2: [%d] | i: [%d]\n", pivot, pivot / 2, stacks->b->idx);
-			if (stacks->b->idx <= pivot / 2)
-				ps_rb(stacks);
-			// ps_pb(stacks);
-			// int ic = ps_ic(stacks->a->idx, size);
-			// if (ic == 1)
-			// 	ps_sc(stacks);
-			// else if (ic == 2)
-			// 	ps_mc(stacks);
-			// else
-			// 	ps_pb(stacks);
-			// ps_simple(stacks, 1);
-			// if (stacks->b && stacks->a->idx - 1 != stacks->b->idx)
-			// {
-			// 	int xf = ft_lstfind(stacks->b, stacks->a->idx - 1);
-			// 	int xr = ft_lstrfind(stacks->b, stacks->a->idx - 1);
-			// 	if (xf == -1)
-			// 		ps_pb(stacks);
-			// 	else if (xf < xr)
-			// 	{
-			// 		while (stacks->b->idx != stacks->a->idx - 1)
-			// 			ps_rb(stacks);
-			// 	}
-			// 	else
-			// 	{
-			// 		while (stacks->b->idx != stacks->a->idx - 1)
-			// 			ps_rrb(stacks);
-			// 	}
-			// }
-			// ps_pb(stacks);
-			ptb++;
+			ps_rb(stacks);
+			sz++;
+		}
+		else if (stacks->a->idx > pivot && stacks->a->idx <= pivot2)
+		{
+			ps_pb(stacks);
+			mz++;
 		}
 		else
 		{
 			ps_ra(stacks);
-			rri++;
+			bz++;
 		}
 	}
-	// while (rri--)
-	// 	ps_rra(stacks);
-	qs_try(stacks, size - ptb);
-	// qs_tryb(stacks, ptb);
+	qs_try(stacks, bz);
+	// ft_printf("===============here\n");
+	qs_tryb(stacks, mz);
+	// int j = 0;
+	// while (j++ < sz)
+	// {
+	// 	ps_rrb(stacks);
+	// }
+	// ps_simple(stacks, 1);
+	// qs_tryb(stacks, sz);
+	// qs_tryb(stacks, sz);
 
-	while (ptb--)
-	{
-		// ps_simple(stacks, 0);
-		ps_simple(stacks, 1);
-		if (stacks->a->idx != stacks->b->idx - 1)
-		{
-			if (ft_lstfind(stacks->b, stacks->a->idx - 1) < ft_lstrfind(stacks->b, stacks->a->idx - 1))
-				while (stacks->b->idx != stacks->a->idx - 1)
-					ps_rb(stacks);
-			else
-				while (stacks->b->idx != stacks->a->idx - 1)
-					ps_rrb(stacks);
-		}
-		ps_pa(stacks);
-	}
+	// while (i++ < size)
+	// {
+	// 	if (stacks->a->idx <= pivot)
+	// 	{
+	// 		ps_pb(stacks);
+	// 		ps_rb(stacks);
+	// 		ss++;
+	// 		// ft_printf("p: [%d] | p2: [%d] | i: [%d]\n", pivot, pivot / 2, stacks->b->idx);
+	// 		// if (stacks->b->idx <= pivot / 2)
+	// 			// ps_rb(stacks);
+	// 		// ps_pb(stacks);
+	// 		// int ic = ps_ic(stacks->a->idx, size);
+	// 		// if (ic == 1)
+	// 		// 	ps_sc(stacks);
+	// 		// else if (ic == 2)
+	// 		// 	ps_mc(stacks);
+	// 		// else
+	// 		// 	ps_pb(stacks);
+	// 		// ps_simple(stacks, 1);
+	// 		// if (stacks->b && stacks->a->idx - 1 != stacks->b->idx)
+	// 		// {
+	// 		// 	int xf = ft_lstfind(stacks->b, stacks->a->idx - 1);
+	// 		// 	int xr = ft_lstrfind(stacks->b, stacks->a->idx - 1);
+	// 		// 	if (xf == -1)
+	// 		// 		ps_pb(stacks);
+	// 		// 	else if (xf < xr)
+	// 		// 	{
+	// 		// 		while (stacks->b->idx != stacks->a->idx - 1)
+	// 		// 			ps_rb(stacks);
+	// 		// 	}
+	// 		// 	else
+	// 		// 	{
+	// 		// 		while (stacks->b->idx != stacks->a->idx - 1)
+	// 		// 			ps_rrb(stacks);
+	// 		// 	}
+	// 		// }
+	// 		// ps_pb(stacks);
+	// 		ptb++;
+	// 	}
+	// 	else if (stacks->a->idx > pivot && stacks->a->idx <= pivot * 2)
+	// 	{
+	// 		ps_pb(stacks);
+	// 		// rri++;
+	// 	}
+	// 	else
+	// 		ps_ra(stacks);
+	// }
+	// // while (rri--)
+	// // 	ps_rra(stacks);
+	// qs_try(stacks, size - ptb);
+	// qs_tryb(stacks, ptb);
+	//
+	// // while (ptb--)
+	// // {
+	// // 	// ps_simple(stacks, 0);
+	// // 	ps_simple(stacks, 1);
+	// // 	if (stacks->a->idx != stacks->b->idx - 1)
+	// // 	{
+	// // 		if (ft_lstfind(stacks->b, stacks->a->idx - 1) < ft_lstrfind(stacks->b, stacks->a->idx - 1))
+	// // 			while (stacks->b->idx != stacks->a->idx - 1)
+	// // 				ps_rb(stacks);
+	// // 		else
+	// // 			while (stacks->b->idx != stacks->a->idx - 1)
+	// // 				ps_rrb(stacks);
+	// // 	}
+	// // 	ps_pa(stacks);
+	// // }
 }
 
 void	qs_tryb(t_stacks *stacks, int size)
@@ -206,51 +256,112 @@ void	qs_tryb(t_stacks *stacks, int size)
 		return ;
 	}
 
-	int pivot = find_median(stacks->b, size);
+	int pivot = find_pivot(stacks->b, size, 0);
+	int pivot2 = find_pivot(stacks->b, size, 1);
 	// ft_printf("bp: [%d]\n", pivot);
 	int i = 0;
-	int pta = 0;
-	int rri = 0;
+	int bz = 0;
+	int mz = 0;
+	int sz = 0;
+	// int d = 1;
+	// ft_printf("depth=b[%d]\n", d);
+	// d++;
 
 	while (i++ < size)
 	{
-		if (stacks->b->idx < pivot)
+		// ft_printf("p: [%d] | p2: [%d] | i: [%d]\n", pivot, pivot2, stacks->a->idx);
+		if (stacks->b->idx <= pivot)
+		{
+			ps_rb(stacks);
+			sz++;
+		}
+		else if (stacks->b->idx > pivot && stacks->b->idx <= pivot2)
 		{
 			ps_pa(stacks);
-			pta++;
+			ps_ra(stacks);
+			mz++;
 		}
 		else
 		{
-			ps_rb(stacks);
-			rri++;
+			ps_pa(stacks);
+			bz++;
 		}
 	}
-	while (rri--)
-		ps_rrb(stacks);
-	qs_tryb(stacks, size - pta);
-	qs_try(stacks, pta);
+	// while (rri--)
+	// 	ps_rrb(stacks);
+	qs_try(stacks, bz);
+	// qs_tryb(stacks, mz);
+	// qs_tryb(stacks, sz);
+	// qs_try(stacks, pta);
 
-	while (pta--)
-		ps_pb(stacks);
+	// while (pta--)
+	// 	ps_pb(stacks);
 }
-//
-// void	ps_qsx(t_stacks  *stacks)
-// {
-// 	int p = stacks->b->idx;
-// 	int cs = ps_ic(p, stacks->size);
-//
-// 	if (cs != 3)
-// 		return ;
-// 	int ic = ps_ic(stacks->b->idx, stacks->size);
-// 	int icn = ps_ic(stacks->b->next->idx, stacks->size);
-// 	while (ic == 3 || icn == 3)
-// 	{
-// 		if (stacks->b->idx <= p)
-// 			ps_pa(stacks);
-// 		else
-// 			ps_rb(stacks);
-// 	}
-// }
+
+t_list *ft_lstpfind(t_list *lst, int size)
+{
+	while (lst)
+	{
+		size--;
+		if (!size)
+			break;
+		lst = lst->next;
+	}
+	if (!lst)
+		return (NULL);
+	return (lst);
+}
+
+void	ps_qsx(t_stacks  *stacks, int size)
+{
+		if (size <= 3)
+	{
+		ps_simple(stacks, 1);
+		return ;
+	}
+
+	int pivot = find_pivot(ft_lstpfind(stacks->b, ft_lstsize(stacks->b) - size), size, 0);
+	int pivot2 = find_pivot(ft_lstpfind(stacks->b, ft_lstsize(stacks->b) - size), size, 1);
+	// ft_printf("bp: [%d]\n", pivot);
+	int i = 0;
+	int bz = 0;
+	int mz = 0;
+	int sz = 0;
+	// int d = 1;
+	// ft_printf("depth=b[%d]\n", d);
+	// d++;
+
+	while (i++ < size)
+	{
+		// ft_printf("p: [%d] | p2: [%d] | i: [%d]\n", pivot, pivot2, stacks->a->idx);
+		if (stacks->eb->idx <= pivot)
+		{
+			ps_rb(stacks);
+			sz++;
+		}
+		else if (stacks->eb->idx > pivot && stacks->eb->idx <= pivot2)
+		{
+			ps_pa(stacks);
+			ps_ra(stacks);
+			mz++;
+		}
+		else
+		{
+			ps_pa(stacks);
+			bz++;
+		}
+	}
+	// while (rri--)
+	// 	ps_rrb(stacks);
+	qs_try(stacks, bz);
+	// qs_tryb(stacks, mz);
+	// qs_tryb(stacks, sz);
+	// qs_try(stacks, pta);
+
+	// while (pta--)
+	// 	ps_pb(stacks);
+
+}
 
 void	ps_qsa(t_stacks *stacks)
 {
