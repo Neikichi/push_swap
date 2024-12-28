@@ -1,33 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.c                                        :+:      :+:    :+:   */
+/*   ft_lstrange.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/17 21:11:59 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/29 02:45:40 by vlow             ###   ########.fr       */
+/*   Created: 2024/12/28 21:37:43 by vlow              #+#    #+#             */
+/*   Updated: 2024/12/28 21:40:31 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "push_swap.h"
 
-void	ps_init(t_stacks *stacks)
+int	ft_lstrange(t_list *lst, int target)
 {
-	if (stacks->size <= 3)
+	int	dist;
+
+	dist = 0;
+	while (lst)
 	{
-		ps_simple_a(stacks);
+		if (lst->idx == target)
+			break ;
+		lst = lst->next;
+		dist++;
 	}
-	if (stacks->size > 3 && stacks->size <= 5)
-	{
-		ps_simple_ex(stacks);
-	}
-	if (stacks->size > 5 && stacks->size <= 100)
-	{
-		// is_init(stacks);
-		qs_init(stacks);
-	}
-	if (stacks->size > 100)
-		qs_init(stacks);
+	if (!lst)
+		return (-1);
+	return (dist);
 }

@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 01:34:27 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/21 17:52:07 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/29 02:02:02 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ps_ra(t_stacks *stacks)
 		temp->next = NULL;
 		ft_lstadd_back(&stacks->a, temp);
 		stacks->ea = temp;
-		ft_putstr_fd("ra\n", 1);
+		op_ins(stacks, "ra");
 	}
 }
 
@@ -39,15 +39,8 @@ void	ps_rb(t_stacks *stacks)
 		temp->next = NULL;
 		ft_lstadd_back(&stacks->b, temp);
 		stacks->eb = temp;
-		ft_putstr_fd("rb\n", 1);
+		op_ins(stacks, "rb");
 	}
-}
-
-void	ps_rr(t_stacks *stacks)
-{
-	ps_ra(stacks);
-	ps_rb(stacks);
-	ft_putstr_fd("rr\n", 1);
 }
 
 void	ps_rra(t_stacks *stacks)
@@ -66,7 +59,7 @@ void	ps_rra(t_stacks *stacks)
 		prev->next = NULL;
 		ft_lstadd_front(&stacks->a, temp);
 		stacks->ea = prev;
-		ft_putstr_fd("rra\n", 1);
+		op_ins(stacks, "rra");
 	}
 }
 
@@ -86,6 +79,6 @@ void	ps_rrb(t_stacks *stacks)
 		prev->next = NULL;
 		ft_lstadd_front(&stacks->b, temp);
 		stacks->eb = prev;
-		ft_putstr_fd("rrb\n", 1);
+		op_ins(stacks, "rrb");
 	}
 }

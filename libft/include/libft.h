@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 22:56:28 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/16 16:07:45 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/28 21:45:44 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,8 @@ t_list	*ft_lstnew(void *content);
 int		ft_lstsize(t_list *lst);
 void	ft_lstpop_front(t_list **lst);
 void	ft_lstpop_back(t_list **lst);
+int		ft_lstrange(t_list *lst, int target);
+int		ft_lstrrange(t_list *lst, int target);
 
 // printf section
 int		ft_printf(const char *format, ...);

@@ -1,21 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   swap_utils3.c                                      :+:      :+:    :+:   */
+/*   ft_lstrrange.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/13 01:35:29 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/13 01:38:40 by vlow             ###   ########.fr       */
+/*   Created: 2024/12/28 21:39:22 by vlow              #+#    #+#             */
+/*   Updated: 2024/12/28 21:40:11 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "push_swap.h"
 
-void	ps_rrr(t_stacks *stacks)
+int	ft_lstrrange(t_list *lst, int target)
 {
-	ps_rra(stacks);
-	ps_rrb(stacks);
-	ft_putstr_fd("rrr\n", 1);
+	int		dist;
+	t_list	*temp;
+
+	dist = 0;
+	temp = NULL;
+	while (lst)
+	{
+		if (lst->idx == target)
+			temp = lst;
+		if (temp)
+			dist++;
+		lst = lst->next;
+	}
+	if (!temp)
+		return (-1);
+	return (dist);
 }

@@ -6,31 +6,36 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 15:44:04 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/26 21:13:02 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/28 22:11:37 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "push_swap.h"
-#include <stdlib.h> // Required for malloc and qsort
+#include <stdlib.h>
+
+static void	swap(int *a, int *b);
+static int	partition(int *arr, int low, int high);
 
 int find_pivot(t_list *s, int count, int flag)
 {
+	int		*arr;
+	t_list	*tmp;
+	int		i;
+
     if (!s || count <= 0)
-        return 0;
-
-    int *arr = malloc(sizeof(int) * count);
+		return 0;
+	arr = malloc(sizeof(int) * count);
     if (!arr)
-        return 0; // Handle allocation failure
-
-    // Populate the array with indices from the linked list
-    t_list *tmp = s;
-    for (int i = 0; i < count; i++) {
-        arr[i] = tmp->idx;
-        tmp = tmp->next;
-    }
-
-    // Sort the array
+        return (0);
+    tmp = s;
+	i = 0;
+	while (i < count)
+	{
+		arr[i] = tmp->idx;
+		tmp = tmp->next;
+		i++;
+	}
     quicksort(arr, 0, count - 1);
 
     // Calculate the pivots
@@ -53,57 +58,72 @@ int find_pivot(t_list *s, int count, int flag)
 }
 
 
-int find_median(t_list *s, int count)
+int	find_median(t_list *s, int count)
 {
+	int		*arr;
+	t_list	*tmp;
+	int		i;
+
 	if (!s || count <= 0)
 		return 0;
-	// count /= 3;
-    int *arr = malloc(sizeof(int) * count);
+
+	arr = malloc(sizeof(int) * count);
     if (!arr)
-        return 0; // or handle allocation failure
-
-    t_list *tmp = s;
-    for (int i = 0; i < count; i++) {
-        arr[i] = tmp->idx;
-        tmp =tmp->next;
-    }
-
-    // Use qsort to sort the array
+        return 0;
+    tmp = s;
+	i = 0;
+	while (i < count)
+	{
+		arr[i] = tmp->idx;
+		tmp = tmp->next;
+		i++;
+	}
     quicksort(arr, 0, count - 1);
-
-    int pivot = arr[count / 3];
+    i = arr[count / 3];
     free(arr);
-    return pivot;
+    return i;
 }
 
-// Swap two integers
-static void swap(int *a, int *b) {
-    int temp = *a;
+void	quicksort(int *arr, int low, int high)
+{
+	int pi;
+
+    if (low < high)
+	{
+        pi = partition(arr, low, high);
+
+        quicksort(arr, low, pi - 1);
+        quicksort(arr, pi + 1, high);
+    }
+}
+
+static void	swap(int *a, int *b)
+{
+    int	temp;
+
+	temp = *a;
     *a = *b;
     *b = temp;
 }
 
-// Partition the array
-static int partition(int *arr, int low, int high) {
-    int pivot = arr[high]; // Pivot is the last element
-    int i = low - 1;       // Index of smaller element
+static int	partition(int *arr, int low, int high)
+{
+    int pivot;
+    int i;
+	int j;
 
-    for (int j = low; j < high; j++) {
-        if (arr[j] <= pivot) {
-            i++;
-            swap(&arr[i], &arr[j]);
-        }
-    }
-    swap(&arr[i + 1], &arr[high]); // Place pivot in correct position
+	pivot = arr[high];
+	i = low - 1;
+	j = low;
+	while (j < high)
+	{
+		if (arr[j] <= pivot)
+		{
+			i++;
+			swap(&arr[i], &arr[j]);
+		}
+		j++;
+	}
+    swap(&arr[i + 1], &arr[high]);
     return i + 1;
-}
-
-// Quick Sort function
-void quicksort(int *arr, int low, int high) {
-    if (low < high) {
-        int pi = partition(arr, low, high); // Partition index
-
-        quicksort(arr, low, pi - 1);  // Sort the left part
-        quicksort(arr, pi + 1, high); // Sort the right part
-    }
 }

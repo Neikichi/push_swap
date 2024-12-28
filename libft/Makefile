@@ -49,6 +49,8 @@ SRC = \
 	$(LIST_DIR)/ft_lstsize.c \
 	$(LIST_DIR)/ft_lstpop_front.c \
 	$(LIST_DIR)/ft_lstpop_back.c \
+	$(LIST_DIR)/ft_lstrange.c \
+	$(LIST_DIR)/ft_lstrrange.c \
 	$(MEMORY_DIR)/ft_bzero.c \
 	$(MEMORY_DIR)/ft_calloc.c \
 	$(MEMORY_DIR)/ft_memchr.c \
