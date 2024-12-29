@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 15:44:04 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/28 22:11:37 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/29 20:10:08 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,61 +16,20 @@
 
 static void	swap(int *a, int *b);
 static int	partition(int *arr, int low, int high);
+static int	find_pivot_h(int *arr, int count, int flag);
 
-int find_pivot(t_list *s, int count, int flag)
-{
-	int		*arr;
-	t_list	*tmp;
-	int		i;
-
-    if (!s || count <= 0)
-		return 0;
-	arr = malloc(sizeof(int) * count);
-    if (!arr)
-        return (0);
-    tmp = s;
-	i = 0;
-	while (i < count)
-	{
-		arr[i] = tmp->idx;
-		tmp = tmp->next;
-		i++;
-	}
-    quicksort(arr, 0, count - 1);
-
-    // Calculate the pivots
-    int first_pivot_idx = count / 3;
-    int second_pivot_idx = (count / 3) * 2;
-
-    // Handle edge cases where count is not perfectly divisible by 3
-    if (first_pivot_idx >= count)
-        first_pivot_idx = count - 1;
-    if (second_pivot_idx >= count)
-        second_pivot_idx = count - 1;
-
-    int pivot = arr[first_pivot_idx];  // First third pivot
-    int px2 = arr[second_pivot_idx];  // Second third pivot
-
-    free(arr);
-
-    // Return the appropriate pivot based on the flag
-    return flag ? px2 : pivot;
-}
-
-
-int	find_median(t_list *s, int count)
+int	find_pivot(t_list *s, int count, int flag)
 {
 	int		*arr;
 	t_list	*tmp;
 	int		i;
 
 	if (!s || count <= 0)
-		return 0;
-
+		return (-1);
 	arr = malloc(sizeof(int) * count);
-    if (!arr)
-        return 0;
-    tmp = s;
+	if (!arr)
+		return (-1);
+	tmp = s;
 	i = 0;
 	while (i < count)
 	{
@@ -78,39 +37,57 @@ int	find_median(t_list *s, int count)
 		tmp = tmp->next;
 		i++;
 	}
-    quicksort(arr, 0, count - 1);
-    i = arr[count / 3];
-    free(arr);
-    return i;
+	quicksort(arr, 0, count - 1);
+	return (find_pivot_h(arr, count, flag));
+}
+
+static int	find_pivot_h(int *arr, int count, int flag)
+{
+	int	pvt1;
+	int	pvt2;
+	int	pvt_i1;
+	int	pvt_i2;
+
+	pvt_i1 = count / 3;
+	pvt_i2 = pvt_i1 * 2;
+	if (pvt_i1 >= count)
+		pvt_i1 = count - 1;
+	if (pvt_i2 >= count)
+		pvt_i2 = count - 1;
+	pvt1 = arr[pvt_i1];
+	pvt2 = arr[pvt_i2];
+	free(arr);
+	if (flag)
+		return (pvt2);
+	return (pvt1);
 }
 
 void	quicksort(int *arr, int low, int high)
 {
-	int pi;
+	int	pi;
 
-    if (low < high)
+	if (low < high)
 	{
-        pi = partition(arr, low, high);
-
-        quicksort(arr, low, pi - 1);
-        quicksort(arr, pi + 1, high);
-    }
+		pi = partition(arr, low, high);
+		quicksort(arr, low, pi - 1);
+		quicksort(arr, pi + 1, high);
+	}
 }
 
 static void	swap(int *a, int *b)
 {
-    int	temp;
+	int	temp;
 
 	temp = *a;
-    *a = *b;
-    *b = temp;
+	*a = *b;
+	*b = temp;
 }
 
 static int	partition(int *arr, int low, int high)
 {
-    int pivot;
-    int i;
-	int j;
+	int	pivot;
+	int	i;
+	int	j;
 
 	pivot = arr[high];
 	i = low - 1;
@@ -124,6 +101,6 @@ static int	partition(int *arr, int low, int high)
 		}
 		j++;
 	}
-    swap(&arr[i + 1], &arr[high]);
-    return i + 1;
+	swap(&arr[i + 1], &arr[high]);
+	return (i + 1);
 }

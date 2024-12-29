@@ -47,7 +47,7 @@ HIDDEN='\033[8m'
 FILE=$PWD/push_swap
 FILE2=$PWD/psiter
 
-SIZE=500
+SIZE=100
 
 printf "${YELLOW}Generating a random permutation of numbers from 1 to $SIZE.${DEF_COLOR}\n"
 PERMUTATION=$(seq 1 ${SIZE} | shuf | tr '\n' ' ')

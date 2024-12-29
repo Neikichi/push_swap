@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:11:57 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/29 01:37:29 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/29 20:13:18 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,12 @@ void	ps_rrb(t_stacks *stacks);
 void	ps_rrr(t_stacks *stacks);
 void	ps_quick_sort(t_stacks *stacks);
 void	quicksort(int *arr, int low, int high);
-int		find_median(t_list *s, int count);
 int		find_pivot(t_list *s, int count, int flag);
+void	qs_ta(t_stacks *stacks, int size);
+void	qs_ba(t_stacks *stacks, int size);
+void	qs_tb(t_stacks *stacks, int size);
+void	qs_bb(t_stacks *stacks, int size);
+t_list	*ft_lstfrange(t_list *lst, int size);
 
 //stacks utils
 int		init_idx(t_stacks *stacks);

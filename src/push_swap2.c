@@ -5,115 +5,115 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/18 16:03:44 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/29 02:44:41 by vlow             ###   ########.fr       */
+/*   Created: 2024/12/17 21:25:53 by vlow              #+#    #+#             */
+/*   Updated: 2024/12/29 14:13:33 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "push_swap.h"
 
-static void		is_fa(t_stacks *stacks);
-// static void		is_fb(t_stacks *stacks);
+static void	ps_simple_3b_h(t_stacks *stacks, int a, int b, int c);
+static void	ps_simple_3a_h(t_stacks *stacks, int a, int b, int c);
 
-void	is_init(t_stacks *stacks)
+void	ps_simple_3a(t_stacks *stacks)
 {
-	int step = stacks->size / 6;
-	int pivot = step; 
-	int count = 0;
+	int	a;
+	int	b;
+	int	c;
 
-	while (ft_lstsize(stacks->a) > 3)
+	if (!stacks || !stacks->a || !stacks->a->next || !stacks->a->next->next)
+		return ;
+	a = stacks->a->idx;
+	b = stacks->a->next->idx;
+	c = stacks->a->next->next->idx;
+	if ((a < b) && (b < c) && (a < c))
+		return ;
+	else if ((a <= b) && (b > c) && (a <= c))
 	{
-		if (stacks->a->idx <= pivot)
-		{
-			ps_pb(stacks);
-			count++;
-			if (stacks->b->idx <= pivot - step / 2 && ft_lstsize(stacks->b) >= 2)
-				ps_rb(stacks);
-			if (count == pivot)
-			{
-				pivot += step;
-				if (pivot >= stacks->size - 3)
-					pivot = stacks->size - 3;
-			}
-		}
-		else
-			ps_ra(stacks);
-	}
-	
-	ps_simple(stacks, 0);
-	while (stacks->b)
-	{
-		is_fa(stacks);
-	}
-	while (stacks->size != stacks->ea->idx)
-	{
-		ps_simple(stacks, 0);
+		ps_ra(stacks);
+		ps_sa(stacks);
 		ps_rra(stacks);
 	}
-	ps_simple(stacks, 0);
+	else if ((a > b) && (b <= c) && (a <= c))
+		ps_sa(stacks);
+	else
+		ps_simple_3a_h(stacks, a, b, c);
 }
 
-static void	is_fa(t_stacks *stacks)
+static void	ps_simple_3a_h(t_stacks *stacks, int a, int b, int c)
 {
-	while (stacks->b)
+	if ((a > b) && (b > c) && (a > c))
 	{
-		int target = stacks->a->idx - 1;
-		int xfdb = ft_lstrange(stacks->b, target);
-		int xrdb = ft_lstrrange(stacks->b, target);
-
-		if (target == stacks->b->idx)
-		{
-			ps_pa(stacks);
-		}
-		else if (target - 1 == stacks->b->idx)
-		{
-			ps_pa(stacks);
-			ps_ra(stacks);
-		}
-		else if (xfdb == -1)
-		{
-			while (stacks->ea->idx != stacks->size)
-			{
-				ps_simple(stacks, 0);
-				ps_rra(stacks);
-			}
-			ps_simple(stacks, 0);
-		}
-		else if (xfdb <= xrdb)
-			while (stacks->b->idx != target)
-				ps_rb(stacks);
-		else
-		{
-			while (stacks->b->idx != target)
-				ps_rrb(stacks);
-		}
+		ps_sa(stacks);
+		ps_ra(stacks);
+		ps_sa(stacks);
+		ps_rra(stacks);
+		ps_sa(stacks);
+	}
+	else if ((a <= b) && (b > c) && (a > c))
+	{
+		ps_ra(stacks);
+		ps_sa(stacks);
+		ps_rra(stacks);
+		ps_sa(stacks);
+	}
+	else if ((a > b) && (b <= c) && (a > c))
+	{
+		ps_sa(stacks);
+		ps_ra(stacks);
+		ps_sa(stacks);
+		ps_rra(stacks);
 	}
 }
-//
-// static void	is_fb(t_stacks *stacks)
-// {
-// 	while (stacks->b)
-// 	{
-// 		int target = stacks->b->idx + 1;
-// 		int fdist = ft_lstrange(stacks->a, target);
-// 		int rdist = ft_lstrrange(stacks->a, target);
-//
-// 		if (target == stacks->a->idx)
-// 		{
-// 			ps_pa(stacks);
-// 		}
-// 		else if (fdist == -1)
-// 		{
-// 			break ;
-// 		}
-// 		else if (fdist <= rdist)
-// 			while (stacks->a->idx != target)
-// 				ps_ra(stacks);
-// 		else
-// 		{
-// 			while (stacks->a->idx != target)
-// 				ps_rra(stacks);
-// 		}
-// 	}
-// }
+
+void	ps_simple_3b(t_stacks *stacks)
+{
+	int	a;
+	int	b;
+	int	c;
+
+	if (!stacks || !stacks->b || !stacks->b->next || !stacks->b->next->next)
+		return ;
+	a = stacks->b->idx;
+	b = stacks->b->next->idx;
+	c = stacks->b->next->next->idx;
+	if ((a > b) && (b > c) && (a > c))
+		return ;
+	else if ((a > b) && (b < c) && (a > c))
+	{
+		ps_rb(stacks);
+		ps_sb(stacks);
+		ps_rrb(stacks);
+	}
+	else if ((a < b) && (b > c) && (a > c))
+		ps_sb(stacks);
+	else
+		ps_simple_3b_h(stacks, a, b, c);
+}
+
+static void	ps_simple_3b_h(t_stacks *stacks, int a, int b, int c)
+{
+	if ((a > b) && (b < c) && (a < c))
+	{
+		ps_rb(stacks);
+		ps_sb(stacks);
+		ps_rrb(stacks);
+		ps_sb(stacks);
+	}
+	else if ((a < b) && (b > c) && (a < c))
+	{
+		ps_sb(stacks);
+		ps_rb(stacks);
+		ps_sb(stacks);
+		ps_rrb(stacks);
+	}
+	else
+	{
+		ps_sb(stacks);
+		ps_rb(stacks);
+		ps_sb(stacks);
+		ps_rrb(stacks);
+		ps_sb(stacks);
+	}
+}

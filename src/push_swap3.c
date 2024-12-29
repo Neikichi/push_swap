@@ -5,127 +5,111 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/22 05:06:21 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/22 05:12:37 by vlow             ###   ########.fr       */
+/*   Created: 2024/12/18 16:03:44 by vlow              #+#    #+#             */
+/*   Updated: 2024/12/29 14:34:36 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "push_swap.h"
 
-// Function prototypes
-// void ps_quick_sort(t_stacks *stacks);
-void ps_sort_stack_b(t_stacks *stacks);
-void partition_stack(t_stacks *stacks, int pivot);
-void partition_stack_b(t_stacks *stacks, int pivot);
-int calculate_pivot(t_list *stack, int size);
-// int ft_lstsize(t_list *stack);
-// void rotate_to_top(t_stacks *stacks, int target_idx, char stack_name);
-void simple_sort_small_stack(t_stacks *stacks, int size, char stack_name);
+static void	is_init_h(t_stacks *stacks, int *inc, int *pvt, int *cnt);
+static void	is_fa(t_stacks *stacks);
+static void	is_fa_na(t_stacks *stacks);
+static void	is_fa_h(t_stacks *stacks, int target, int opt);
 
-// Main quick sort function
-void ps_quick_sort(t_stacks *stacks) {
-    int size = ft_lstsize(stacks->a);
-	if (size <= 3) {
-        simple_sort_small_stack(stacks, size, 'a'); // Sort stack a directly
-        return;
-    }
-    int pivot = calculate_pivot(stacks->a, size);
+void	is_init(t_stacks *stacks)
+{
+	int	inc;
+	int	pvt;
+	int	cnt;
 
-    // Partition stack a around the pivot
-    partition_stack(stacks, pivot);
-
-    // Recursively sort the larger partition in stack a
-    ps_quick_sort(stacks);
-
-    // Recursively sort the smaller partition in stack b
-    ps_sort_stack_b(stacks);
-
-    // Reassemble: Push all elements from stack b back to stack a
-    while (ft_lstsize(stacks->b) > 0) {
-        ps_pa(stacks);
-    }
-}
-
-void simple_sort_small_stack(t_stacks *stacks, int size, char stack_name) {
-    t_list *stack = (stack_name == 'a') ? stacks->a : stacks->b;
-
-    if (size == 2) {
-        // Swap if needed for size 2
-        if (stack->idx > stack->next->idx) {
-            if (stack_name == 'a') ps_sa(stacks);
-            else ps_sb(stacks);
-        }
-    } else if (size == 3) {
-        // Sort for size 3 using swaps and rotations
-        if (stack->idx > stack->next->idx && stack->idx > stack->next->next->idx) {
-            if (stack_name == 'a') ps_ra(stacks);
-            else ps_rb(stacks);
-        }
-        if (stack->idx > stack->next->idx) {
-            if (stack_name == 'a') ps_sa(stacks);
-            else ps_sb(stacks);
-        }
-        if (stack->next->idx > stack->next->next->idx) {
-            if (stack_name == 'a') {
-                ps_rra(stacks);
-                ps_sa(stacks);
-            } else {
-                ps_rrb(stacks);
-                ps_sb(stacks);
-            }
-        }
-    }
-}
-
-// Partition stack a around the pivot
-void partition_stack(t_stacks *stacks, int pivot) {
-    int size = ft_lstsize(stacks->a);
-    for (int i = 0; i < size; i++) {
-        if (stacks->a->idx < pivot) {
-            ps_pb(stacks); // Push smaller elements to stack b
-        } else {
-            ps_ra(stacks); // Rotate larger elements in stack a
-        }
-    }
-}
-
-// Recursively sort stack b
-void ps_sort_stack_b(t_stacks *stacks) {
-    int size = ft_lstsize(stacks->b);
-    if (size <= 3) {
-        simple_sort_small_stack(stacks, size, 'b'); // Sort stack b directly
-        return;
+	inc = stacks->size / 6;
+	pvt = inc;
+	cnt = 0;
+	is_init_h(stacks, &inc, &pvt, &cnt);
+	ps_simple(stacks, 0);
+	while (stacks->b)
+	{
+		is_fa(stacks);
 	}
-    int pivot = calculate_pivot(stacks->b, size);
-
-    // Partition stack b around the pivot
-    partition_stack_b(stacks, pivot);
-
-    // Recursively sort both partitions
-    ps_sort_stack_b(stacks);
-    ps_quick_sort(stacks);
+	while (stacks->size != stacks->ea->idx)
+	{
+		ps_simple(stacks, 0);
+		ps_rra(stacks);
+	}
+	ps_simple(stacks, 0);
 }
 
-// Partition stack b around the pivot
-void partition_stack_b(t_stacks *stacks, int pivot) {
-    int size = ft_lstsize(stacks->b);
-    for (int i = 0; i < size; i++) {
-        if (stacks->b->idx < pivot) {
-            ps_rb(stacks); // Rotate smaller elements in stack b
-        } else {
-            ps_pa(stacks); // Push larger elements to stack a
-        }
-    }
+static void	is_init_h(t_stacks *stacks, int *inc, int *pvt, int *cnt)
+{
+	while (ft_lstsize(stacks->a) > 3)
+	{
+		if (stacks->a->idx <= *pvt)
+		{
+			ps_pb(stacks);
+			(*cnt)++;
+			if (stacks->b->idx <= *pvt - *inc / 2 && ft_lstsize(stacks->b) >= 2)
+				ps_rb(stacks);
+			if (*cnt == *pvt)
+			{
+				*pvt += *inc;
+				if (*pvt >= stacks->size - 3)
+					*pvt = stacks->size - 3;
+			}
+		}
+		else
+			ps_ra(stacks);
+	}
 }
 
-// Calculate pivot as the approximate median of the stack
-int calculate_pivot(t_list *stack, int size) {
-    int sum = 0;
-    t_list *current = stack;
-    while (current) {
-        sum += current->idx;
-        current = current->next;
-    }
-    return sum / size; // Approximate median
+static void	is_fa(t_stacks *stacks)
+{
+	int	target;
+	int	xfdb;
+	int	xrdb;
+
+	while (stacks->b)
+	{
+		target = stacks->a->idx - 1;
+		xfdb = ft_lstrange(stacks->b, target);
+		xrdb = ft_lstrrange(stacks->b, target);
+		if (target == stacks->b->idx)
+			ps_pa(stacks);
+		else if (target - 1 == stacks->b->idx)
+		{
+			ps_pa(stacks);
+			ps_ra(stacks);
+		}
+		else if (xfdb == -1)
+			is_fa_na(stacks);
+		else if (xfdb <= xrdb)
+			is_fa_h(stacks, target, 0);
+		else
+			is_fa_h(stacks, target, 1);
+	}
+}
+
+static void	is_fa_na(t_stacks *stacks)
+{
+	while (stacks->ea->idx != stacks->size)
+	{
+		ps_simple(stacks, 0);
+		ps_rra(stacks);
+	}
+	ps_simple(stacks, 0);
+}
+
+static void	is_fa_h(t_stacks *stacks, int target, int opt)
+{
+	if (!opt)
+	{
+		while (stacks->b->idx != target)
+			ps_rb(stacks);
+	}
+	else
+	{
+		while (stacks->b->idx != target)
+			ps_rrb(stacks);
+	}
 }

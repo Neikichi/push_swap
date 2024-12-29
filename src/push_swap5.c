@@ -3,75 +3,79 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap5.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
+/*   By: vlow <vlow@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/28 18:36:33 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/28 22:07:36 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/29 21:32:26 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "push_swap.h"
 
-void	qs_ta(t_stacks *stacks, int size);
-void	qs_ba(t_stacks *stacks, int size);
-void	qs_tb(t_stacks *stacks, int size);
-void	qs_bb(t_stacks *stacks, int size);
-static t_list	*ft_lstfrange(t_list *lst, int size);
+static void	qs_ta_partition(t_stacks *stacks, int *arr, int size);
+static void	qs_ba_partition(t_stacks *stacks, int *arr, int size);
 
-void qs_init(t_stacks *stacks)
+void	qs_init(t_stacks *stacks)
 {
 	qs_ta(stacks, stacks->size);
 }
 
+//	arr[5] = pivot1, pivot2, bz, mz, sz
 void	qs_ta(t_stacks *stacks, int size)
 {
+	int	arr[5];
+
 	if (size <= 3)
 	{
 		ps_simple(stacks, 0);
 		return ;
 	}
+	ft_memset(arr, 0, sizeof(arr));
+	arr[0] = find_pivot(stacks->a, size, 0);
+	arr[1] = find_pivot(stacks->a, size, 1);
+	qs_ta_partition(stacks, arr, size);
+	if (ft_lstsize(stacks->a) == arr[2])
+		qs_ta(stacks, arr[2]);
+	else
+		qs_ba(stacks, arr[2]);
+	qs_tb(stacks, arr[3]);
+	if (ft_lstsize(stacks->b) == arr[4])
+		qs_tb(stacks, arr[4]);
+	else
+		qs_bb(stacks, arr[4]);
+}
 
-	int pivot = find_pivot(stacks->a, size, 0);
-	int pivot2 = find_pivot(stacks->a, size, 1);
-	int bz = 0;
-	int mz = 0;
-	int sz = 0;
-	int i = 0;
+static void	qs_ta_partition(t_stacks *stacks, int *arr, int size)
+{
+	int	i;
 
+	i = 0;
 	while (i++ < size)
 	{
-		if (stacks->a->idx <= pivot)
+		if (stacks->a->idx <= arr[0])
 		{
 			ps_pb(stacks);
 			ps_rb(stacks);
-			sz++;
+			arr[4]++;
 		}
-		else if (stacks->a->idx > pivot && stacks->a->idx <= pivot2)
+		else if (stacks->a->idx > arr[0] && stacks->a->idx <= arr[1])
 		{
 			ps_pb(stacks);
-			mz++;
+			arr[3]++;
 		}
 		else
 		{
 			ps_ra(stacks);
-			bz++;
+			arr[2]++;
 		}
 	}
-	if (ft_lstsize(stacks->a) == bz)
-		qs_ta(stacks, bz);
-	else
-		qs_ba(stacks, bz);
-	qs_tb(stacks, mz);
-	if (ft_lstsize(stacks->b) == sz)
-		qs_tb(stacks, sz);
-	else
-		qs_bb(stacks, sz);
-	
 }
 
 void	qs_ba(t_stacks *stacks, int size)
 {
+	int	arr[5];
+
 	if (size <= 3)
 	{
 		while (size--)
@@ -79,141 +83,42 @@ void	qs_ba(t_stacks *stacks, int size)
 		ps_simple(stacks, 0);
 		return ;
 	}
-	int pivot = find_pivot(ft_lstfrange(stacks->a, ft_lstsize(stacks->a) - size), size, 0);
-	int pivot2 = find_pivot(ft_lstfrange(stacks->a, ft_lstsize(stacks->a) - size), size, 1);
-	int bz = 0;
-	int mz = 0;
-	int sz = 0;
-	int i = 0;
+	ft_memset(arr, 0, sizeof(arr));
+	arr[0] = find_pivot(ft_lstfrange(stacks->a, \
+				ft_lstsize(stacks->a) - size), size, 0);
+	arr[1] = find_pivot(ft_lstfrange(stacks->a, \
+				ft_lstsize(stacks->a) - size), size, 1);
+	qs_ba_partition(stacks, arr, size);
+	qs_ta(stacks, arr[2]);
+	qs_tb(stacks, arr[3]);
+	if (ft_lstsize(stacks->b) == arr[4])
+		qs_tb(stacks, arr[4]);
+	else
+		qs_bb(stacks, arr[4]);
+}
 
+static void	qs_ba_partition(t_stacks *stacks, int *arr, int size)
+{
+	int	i;
+
+	i = 0;
 	while (i++ < size)
 	{
 		ps_rra(stacks);
-		if (stacks->a->idx <= pivot)
+		if (stacks->a->idx <= arr[0])
 		{
 			ps_pb(stacks);
 			ps_rb(stacks);
-			sz++;
+			arr[4]++;
 		}
-		else if (stacks->a->idx > pivot && stacks->a->idx <= pivot2)
+		else if (stacks->a->idx > arr[0] && stacks->a->idx <= arr[1])
 		{
 			ps_pb(stacks);
-			mz++;
+			arr[3]++;
 		}
 		else
 		{
-			bz++;
+			arr[2]++;
 		}
 	}
-	qs_ta(stacks, bz);
-	qs_tb(stacks, mz);
-	if (ft_lstsize(stacks->b) == sz)
-		qs_tb(stacks, sz);
-	else
-		qs_bb(stacks, sz);
-}
-
-void	qs_tb(t_stacks *stacks, int size)
-{
-	if (size <= 3)
-	{
-		ps_simple(stacks, 1);
-		while (size--)
-			ps_pa(stacks);
-		return ;
-	}
-
-	int pivot = find_pivot(stacks->b, size, 0);
-	int pivot2 = find_pivot(stacks->b, size, 1);
-	int i = 0;
-	int bz = 0;
-	int mz = 0;
-	int sz = 0;
-
-	while (i++ < size)
-	{
-		if (stacks->b->idx <= pivot)
-		{
-			ps_rb(stacks);
-			sz++;
-		}
-		else if (stacks->b->idx > pivot && stacks->b->idx <= pivot2)
-		{
-			ps_pa(stacks);
-			ps_ra(stacks);
-			mz++;
-		}
-		else
-		{
-			ps_pa(stacks);
-			bz++;
-		}
-	}
-	qs_ta(stacks, bz);
-	qs_ba(stacks, mz);
-	if (ft_lstsize(stacks->b) == sz)
-		qs_tb(stacks, sz);
-	else
-		qs_bb(stacks, sz);
-
-}
-
-void	qs_bb(t_stacks *stacks, int size)
-{
-	if (size <= 3)
-	{
-		while (size--)
-		{
-			ps_rrb(stacks);
-			ps_pa(stacks);
-		}
-		ps_simple(stacks, 0);
-		return ;
-	}
-
-	int pivot = find_pivot(ft_lstfrange(stacks->b, ft_lstsize(stacks->b) - size), size, 0);
-	int pivot2 = find_pivot(ft_lstfrange(stacks->b, ft_lstsize(stacks->b) - size), size, 1);
-	int i = 0;
-	int bz = 0;
-	int mz = 0;
-	int sz = 0;
-
-	while (i++ < size)
-	{
-		if (stacks->eb->idx <= pivot)
-		{
-			ps_rrb(stacks);
-			ps_pa(stacks);
-			ps_ra(stacks);
-			sz++;
-		}
-		else if (stacks->eb->idx > pivot && stacks->eb->idx <= pivot2)
-		{
-			ps_rrb(stacks);
-			mz++;
-		}
-		else
-		{
-			ps_rrb(stacks);
-			ps_pa(stacks);
-			bz++;
-		}
-	}
-	qs_ta(stacks, bz);
-	qs_tb(stacks, mz);
-	qs_ba(stacks, sz);
-}
-
-static t_list	*ft_lstfrange(t_list *lst, int size)
-{
-	while (lst)
-	{
-		size--;
-		if (!size)
-			break;
-		lst = lst->next;
-	}
-	if (!lst)
-		return (NULL);
-	return (lst);
 }
