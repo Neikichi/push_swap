@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 01:40:33 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/29 02:19:08 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/31 00:10:29 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,34 @@ void	init_stack(t_stacks *stacks)
 	stacks->eb = NULL;
 	stacks->op.buf_cur = NULL;
 	stacks->op.buf_prv = NULL;
+}
+
+int	init_idx(t_stacks *stacks)
+{
+	t_list	*ta;
+	t_list	*ts;
+	int		idx;
+
+	if (!stacks || !stacks->a || !stacks->ds)
+		return (0);
+	ts = stacks->ds;
+	idx = 1;
+	while (ts)
+	{
+		ta = stacks->a;
+		while (ta)
+		{
+			if (*(int *)ts->content == *(int *)ta->content)
+			{
+				ta->idx = idx++;
+				break ;
+			}
+			ta = ta->next;
+		}
+		ts = ts->next;
+	}
+	stacks->size = idx - 1;
+	return (1);
 }
 
 void	free_stacks(t_stacks *stacks)

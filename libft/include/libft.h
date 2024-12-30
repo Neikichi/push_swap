@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/09 22:56:28 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/28 21:45:44 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/31 00:44:48 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ typedef struct s_list
 }					t_list;
 
 // for printf control struct
-typedef struct s_flags {
+typedef struct s_flags
+{
 	int		left_align;
 	int		zero_pad;
 	int		hash_hex;

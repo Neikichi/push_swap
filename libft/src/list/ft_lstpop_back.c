@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 13:25:23 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/10 13:29:32 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/31 00:44:01 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 void	ft_lstpop_back(t_list **lst)
 {
-	t_list *temp;
-	t_list *prev;
+	t_list	*temp;
+	t_list	*prev;
 
 	if (!lst || !*lst)
 		return ;

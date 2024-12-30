@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 01:35:21 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/29 03:21:34 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/30 21:17:52 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,12 @@ static int	op_ss(t_stacks *stacks)
 	bc = ft_strncmp("sb", stacks->op.buf_cur, 2);
 	if (!ap && !bc)
 	{
-		ft_printf("rrr\n");
+		ft_printf("ss\n");
 		return (1);
 	}
 	else if (!bp && !ac)
 	{
-		ft_printf("rrr\n");
+		ft_printf("ss\n");
 		return (1);
 	}
 	return (0);
@@ -93,12 +93,12 @@ static int	op_rr(t_stacks *stacks)
 	bc = ft_strncmp("rb", stacks->op.buf_cur, 2);
 	if (!ap && !bc)
 	{
-		ft_printf("rrr\n");
+		ft_printf("rr\n");
 		return (1);
 	}
 	else if (!bp && !ac)
 	{
-		ft_printf("rrr\n");
+		ft_printf("rr\n");
 		return (1);
 	}
 	return (0);

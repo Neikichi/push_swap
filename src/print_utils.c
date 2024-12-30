@@ -6,62 +6,46 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 17:36:46 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/18 17:31:05 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/31 00:42:27 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "push_swap.h"
 
-// static void	print_idx(t_list *lst);
+static void	print_stack_h(t_list **lst);
 
 void	print_stack(t_stacks *stacks)
 {
 	t_list	*ta;
 	t_list	*tb;
-	t_list	*ts;
-	int		size;
 
-	size = 1;
 	ta = stacks->a;
 	tb = stacks->b;
-	ts = stacks->ds;
-	ft_printf("%-19s|%19s|	Ds	| Size: %d\n", "Stacks A", "Stacks B     ", stacks->size);
+	ft_printf("%-19s|%-19s| Size: %d\n", "Stacks A", "Stacks B", stacks->size);
 	while (ta || tb)
 	{
-		if (ta)
-		{
-			ft_printf("[%3d]: %-12d", ta->idx, *(int *)ta->content);
-			ta = ta->next;
-		}
-		else
-			ft_printf("%-19c", ' ');
+		print_stack_h(&ta);
 		ft_printf("|");
-		if (tb)
-		{
-			ft_printf("[%3d]: %-12d", tb->idx, *(int *)tb->content);
-			tb = tb->next;
-		}
-		else
-			ft_printf("%19c", ' ');
+		print_stack_h(&tb);
 		ft_printf("|");
-		if (ts)
-		{
-			ft_printf("uI:%d = %d = i: %d", size++, *(int *)ts->content, ts->idx);
-			ts = ts->next;
-		}
-		else
-			ft_printf("%10c", ' ');
 		ft_printf("\n");
 	}
 }
 
-// static void	print_idx(t_list *lst)
-// {
-// 	ft_printf("[%d]: %-11d", lst->idx, *(int *)lst->content);
-// 	lst = lst->next;
-// }
-//
+static void	print_stack_h(t_list **lst)
+{
+	if (*lst)
+	{
+		ft_printf("[%3d]: %-12d", (*lst)->idx, *(int *)(*lst)->content);
+		*lst = (*lst)->next;
+	}
+	else
+	{
+		ft_printf("%-19c", ' ');
+	}
+}
+
 void	print_ds(t_stacks *stacks)
 {
 	t_list	*ptr;

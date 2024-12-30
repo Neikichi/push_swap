@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 03:05:23 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/17 21:19:54 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/31 00:10:58 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,32 +77,20 @@ int	chk_split(char **str)
 	return (1);
 }
 
-int	init_idx(t_stacks *stacks)
+int	chk_isort(t_stacks *stacks)
 {
 	t_list	*ta;
-	t_list	*ts;
-	int		idx;
 
-	if (!stacks || !stacks->a || !stacks->ds)
+	if (!stacks || !stacks->a)
 		return (0);
-	ts = stacks->ds;
-	idx = 1;
-	while (ts)
+	ta = stacks->a;
+	while (ta && ta->next)
 	{
-		ta = stacks->a;
-		while (ta)
-		{
-			if (*(int *)ts->content == *(int *)ta->content)
-			{
-				ta->idx = idx++;
-				break ;
-			}
-			ta = ta->next;
-		}
-		ts = ts->next;
+		if (*(int *)ta->content > *(int *)ta->next->content)
+			return (1);
+		ta = ta->next;
 	}
-	stacks->size = idx - 1;
-	return (1);
+	return (0);
 }
 
 int	chk_atoi(const char *nptr)

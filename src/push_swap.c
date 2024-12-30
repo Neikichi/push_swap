@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 21:11:59 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/29 21:45:23 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/31 00:04:11 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	ps_init(t_stacks *stacks)
 	if (stacks->size > 5 && stacks->size <= 100)
 	{
 		is_init(stacks);
-		// qs_init(stacks);
 	}
 	if (stacks->size > 100)
 		qs_init(stacks);

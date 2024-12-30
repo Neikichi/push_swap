@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:11:57 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/29 20:13:18 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/31 00:57:17 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ typedef struct s_stacks
 
 //push swap
 void	ps_init(t_stacks *stacks);
+
+// simple sort
 void	ps_simple_a(t_stacks *stacks);
 void	ps_simple_b(t_stacks *stacks);
 void	ps_simple_ex(t_stacks *stacks);
@@ -42,11 +44,8 @@ void	ps_simple_3b(t_stacks *stacks);
 void	ps_simple_2a(t_stacks *stacks);
 void	ps_simple_2b(t_stacks *stacks);
 void	ps_simple(t_stacks *stacks, int z);
-void	is_init(t_stacks *stacks);
-void	qs_init(t_stacks *stacks);
 
 //push swap utils
-void	init_stack(t_stacks *stacks);
 void	ps_sa(t_stacks *stacks);
 void	ps_sb(t_stacks *stacks);
 void	ps_ss(t_stacks *stacks);
@@ -58,6 +57,12 @@ void	ps_rr(t_stacks *stacks);
 void	ps_rra(t_stacks *stacks);
 void	ps_rrb(t_stacks *stacks);
 void	ps_rrr(t_stacks *stacks);
+
+// iter sort
+void	is_init(t_stacks *stacks);
+
+// quick sort
+void	qs_init(t_stacks *stacks);
 void	ps_quick_sort(t_stacks *stacks);
 void	quicksort(int *arr, int low, int high);
 int		find_pivot(t_list *s, int count, int flag);
@@ -68,6 +73,7 @@ void	qs_bb(t_stacks *stacks, int size);
 t_list	*ft_lstfrange(t_list *lst, int size);
 
 //stacks utils
+void	init_stack(t_stacks *stacks);
 int		init_idx(t_stacks *stacks);
 int		chk_dupes(t_stacks *stacks, int *n);
 int		chk_isort(t_stacks *stacks);

@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 01:39:39 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/17 21:07:54 by vlow             ###   ########.fr       */
+/*   Updated: 2024/12/31 00:16:45 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 
 static int	init_a_h(t_stacks *stacks, char **str, char **temp);
 static int	chk_dupes_h(t_stacks *stacks, int *n);
+static int	chk_dupes_err(int *n);
 
 int	chk_dupes(t_stacks *stacks, int *n)
 {
@@ -28,7 +29,7 @@ int	chk_dupes(t_stacks *stacks, int *n)
 	while (ptr)
 	{
 		if (*(int *)ptr->content == *n)
-			return (0);
+			return (chk_dupes_err(n));
 		else if (*(int *)ptr->content < *n
 			&& (!ptr->next || *(int *)ptr->next->content > *n))
 		{
@@ -45,28 +46,18 @@ int	chk_dupes(t_stacks *stacks, int *n)
 	return (1);
 }
 
+static int	chk_dupes_err(int *n)
+{
+	free(n);
+	return (0);
+}
+
 static int	chk_dupes_h(t_stacks *stacks, int *n)
 {
 	if (!stacks->ds || *(int *)stacks->ds->content > *n)
 	{
 		ft_lstadd_front(&stacks->ds, ft_lstnew(n));
 		return (1);
-	}
-	return (0);
-}
-
-int	chk_isort(t_stacks *stacks)
-{
-	t_list	*ta;
-
-	if (!stacks || !stacks->a)
-		return (0);
-	ta = stacks->a;
-	while (ta && ta->next)
-	{
-		if (*(int *)ta->content > *(int *)ta->next->content)
-			return (1);
-		ta = ta->next;
 	}
 	return (0);
 }
