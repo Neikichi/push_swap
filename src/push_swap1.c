@@ -6,7 +6,7 @@
 /*   By: vlow <vlow@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 21:25:53 by vlow              #+#    #+#             */
-/*   Updated: 2024/12/29 14:11:07 by vlow             ###   ########.fr       */
+/*   Updated: 2025/01/02 14:58:03 by vlow             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,7 @@ static void	ps_simple_b_h(t_stacks *stacks, int a, int b, int c)
 {
 	if (c > a && a > b)
 	{
-		ps_sb(stacks);
-		ps_rb(stacks);
+		ps_rrb(stacks);
 	}
 	else if (c > b && b > a)
 	{
