@@ -144,6 +144,8 @@ pa
 
 ## 🛠️ Build
 
+The project uses a plain `Makefile` — no cmake or `compile_flags.txt` required.
+
 ```bash
 # Build push_swap
 make
